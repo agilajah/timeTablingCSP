@@ -1,0 +1,19 @@
+https://www.academia.edu/2876050/Solving_University_Timetabling_As_a_Constraint_Satisfaction_Problem_with_Genetic_Algorithm?auto=download
+
+http://www.fi.muni.cz/~hanka/publ/asap04.pdf
+
+http://ro.uow.edu.au/cgi/viewcontent.cgi?article=1470&context=infopapers
+
+http://www.bracil.net/csp/papers/AbbasTsang-Timetabling-Aiccsa01.pdf
+
+http://www.cs.nott.ac.uk/~pszrq/files/CBS1.pdf
+
+https://cs.uwaterloo.ca/~vanbeek/Publications/cai98.pdf
+
+http://www.unitime.org/papers/phd05.pdf
+
+http://www.en.pms.ifi.lmu.de/publications/dissertationen/PMS-DISS-2003-1/PMS-DISS-2003-1.pdf
+
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.44.8460&rep=rep1&type=pdf
+
+http://web.csulb.edu/~obenli/DSS/node6.html (Recommended)
