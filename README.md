@@ -10,16 +10,17 @@ Create Course Timetabling Application using CSP's Algorithms :
 Identifying Problem Component :
   1. Variables
 		The variables of this problem is 
-			s(h,j), the position of values that will be assigned
-			where h is the day representations (1 = Monday, 2 = Tuesday, and so on)
+			\t\t\t s(h,j), the position of values that will be assigned
+			\t\t\t where h is the day representations (1 = Monday, 2 = Tuesday, and so on)
   2. Domains
-		a. MK -> key by Course_Id & Course_No
-		b. R -> key by Room_Name & MK
+		\t\t a. MK -> key by Course_Id & Course_No <br>
+		\t\t b. R -> key by Room_Name & MK <br>
   3. Constraints
-		a. h >= 1 && h <= 5
-		b. j >= 7 && j <= 17
-		c. MK1#h,j != MK2#h,j
-		d. R.MK1 != R.MK2
+		\t\t a. h >= 1 && h <= 5 <br>
+		\t\t b. j >= 7 && j <= 17 <br>
+		\t\t c. MK1#h,j != MK2#h,j <br>
+		\t\t d. R.MK1 != R.MK2 <br>
+		\t\t e. MK.R == '-' -> MK.R = random(R) <br>
 
 
 By Febi Agil Ifdillah(13514010), Harry Alvin Waidan Kefas, Naufal Malik Rabbani, Anwar Ramadha
