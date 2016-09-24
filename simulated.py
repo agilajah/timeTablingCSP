@@ -1,6 +1,14 @@
 # simulated annealing search algorithm
 # var : s(h, j)
 # domain : mk by code, r by name & mk
+# constraints : (for all mk to all mk & all ruang)
+"""
+	1. mk1.jammulai != mk2.jammulai 
+	2. mk1.jamselesai < mk2.jammulai
+	3. mk1.jamselesai > mk2.jammulai && mk1.ruang != mk2.ruang
+	4. ruangavailable(mk1.jammulai, mk1.jammulai+mk1.durasi) # sesuai ruang.jambuka dan ruang.jamtutup
+	5. ruangavailable(mk1.hari) # sesuai ruang.haribuka
+"""
 """
 	Time mapping :
 		s[][0] -> s[][7]
@@ -18,8 +26,8 @@
 		s[4][] -> s[4+1][]
 
 	Room and Course mapping :
-		room : ruang[]
-		course : mk[]
+		room : r[]
+		course : mappedmk[]
 """
 
 import random
@@ -47,7 +55,6 @@ def getFile(filename):
 				if status == 'r':
 					listOfParsed_ruang.append(listOfParsedData)
 				elif status == 'j':
-					listOfParsedData.append(0)
 					listOfParsed_jadwal.append(listOfParsedData)
 		pass
 	except Exception, e:
@@ -55,11 +62,6 @@ def getFile(filename):
 	listOfParsed.append(listOfParsed_ruang)
 	listOfParsed.append(listOfParsed_jadwal)
 	return listOfParsed;
-
-def getMatkul(matkul):
-	result = random.randint(0,len(matkul)-1)
-	matkul[result][len(matkul[result])-1] = 1
-	return matkul[result]
 
 def mappingMatkul(matkul):
 	mapping_matkul = []
@@ -91,26 +93,36 @@ def mappingRuangan(ruang):
 		i += 1
 	return mapping_ruang;
 
+def getMatkul(mmatkul):
+	result = random.randint(0,len(mmatkul)-1)
+	if len(mmatkul[result]) > 5:
+		while True:
+			result = random.randint(0,len(mmatkul)-1)
+			if len(mmatkul[result]) <= 5:
+				break
+	mmatkul[result].append(1) # status already taken for config (when eval, pop())
+	return mmatkul[result];
+
 # check constraint
 def constraint_check(days, hour, mmatkul):
-
-	if days in mmatkul[i in range(0,len(mmatkul))][4]:
-		pass
-
-	return False;
+	if days in mmatkul[4]:
+		if mmatkul[2] >= hour:
+			return True;
+	else:
+		return False;
 
 # init
 def initialize(sel, ruangan, mmatkul):
 	# sel <- ruangan + matkul
 	# sel_pos <- randomized between 0 and 10 (hours) and 0 and 4 (days)
 	# every assignment decrease count
-	count = len(matkul)
+	count = len(mmatkul)
 	while count > 0:
 		posx = random.randint(0,4) # days
 		posy = random.randint(0,10) # hours/time
-		
-#		if (constraint_check()):
-
+		mk = getMatkul(mmatkul)
+		if (constraint_check(posx, posy, mk)):
+			pass # still infinite loop
 
 def evalMatkul(selx, sely, mmatkul):
 	# mmatkul adalah mapping dari matkul
@@ -119,21 +131,15 @@ def evalMatkul(selx, sely, mmatkul):
 
 ruang = getFile('Testcase.txt')[0]
 mk = getFile('Testcase.txt')[1]
-mkm = mappingMatkul(mk)
+mappedmk = mappingMatkul(mk)
 r = mappingRuangan(ruang)
+s = [] # sel-sel (hari, jam) -> hari = sb-x/second iterated, jam = sb-y/first iterated
 
-#parseruang && mk
-#print mk
-s = []
+
+# GLOBAL ALGORITHM
 # initialize config
-# initialize(s, ruang, mk)
+initialize(s, r, mappedmk)
 # Eval
-
-
 # random move but not changing the config yet
 # eval the random move
 # case analyze between evals
-
-# shj = [][]
-# for i in range(0,9): # python random algorithm
-# 	print randint(0,9)
