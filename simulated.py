@@ -71,7 +71,9 @@ def mappingMatkul(matkul):
 		himpunan = [] # contains idx, matkulcode, and 
 		himpunan.append(i)
 		if (matkul[i][1] == '-'): # matkul code
-			himpunan.append(list(matkul[i][0])) 
+			temp = []
+			temp.append(matkul[i][0])
+			himpunan.append(temp) 
 		else:
 			himpunan.append(list(matkul[i][:2]))
 		himpunan.append(int(matkul[i][2][:2])-7) # start hour
@@ -106,7 +108,9 @@ def getMatkul(mmatkul):
 			result = random.randint(0,len(mmatkul)-1)
 			if len(mmatkul[result]) <= 5:
 				break
-	mmatkul[result].append(1) # status already taken for config (when eval, pop())
+			else:
+				continue
+	mmatkul[result].append("ok") # status already taken for config (when eval, pop())
 	return mmatkul[result];
 
 # check constraint of matkul and ruang
@@ -124,11 +128,13 @@ def constraint_check_ruang(days, hour, ruang):
 	else:
 		return False;
 
-def special(sel, mmatkul):
+def special(ruang, ruangan, mmatkul):
 	if len(mmatkul[1]) > 1:
-		return True;
-	else:
-		return False;
+		for n in ruangan:
+			if (mmatkul[1][1] in n):
+				idx = ruangan.index(n)
+		ruang = ruangan[idx]
+	return ruang;
 
 # init
 def initialize(sel, ruangan, mmatkul):
@@ -139,8 +145,9 @@ def initialize(sel, ruangan, mmatkul):
 	while count > 0:
 		posx = random.randint(0,4) # days
 		posy = random.randint(0,10) # hours/time
-		mk = getMatkul(mmatkul)
 		ruang = ruangan[random.randint(0,len(ruangan)-1)]
+		mk = getMatkul(mmatkul)
+		ruang = special(ruang, ruangan, mk)
 		if (constraint_check_matkul(posx, posy, mk)):
 			if (constraint_check_ruang(posx, posy, ruang)):
 				print "A"
