@@ -61,13 +61,46 @@ def getMatkul(matkul):
 	matkul[result][len(matkul[result])-1] = 1
 	return matkul[result]
 
+def mappingMatkul(matkul):
+	mapping_matkul = []
+	i = 0
+	for x in matkul:
+		himpunan = [] # contains idx, matkulcode, and 
+		himpunan.append(i)
+		himpunan.append(matkul[i][0]) # matkul code
+		himpunan.append(int(matkul[i][2][:2])-7) # start hour
+		himpunan.append(int(matkul[i][4])) # clock duration
+		temp = matkul[i][5].split(',')
+		himpunan.append(list(int(j) for j in temp)) # matkul available days
+		mapping_matkul.append(himpunan) # append himpunan to mapping
+		i += 1
+	return mapping_matkul;
+
+def mappingRuangan(ruang):
+	mapping_ruang = []
+	i = 0
+	for x in ruang:
+		himpunan = [] # contains idx, ruangcode, and 
+		himpunan.append(i)
+		himpunan.append(ruang[i][0]) # ruang code
+		himpunan.append(int(ruang[i][1][:2])-7) # start hour
+		himpunan.append(int(ruang[i][2][:2]) - int(ruang[i][1][:2])) # clock duration
+		temp = ruang[i][3].split(',')
+		himpunan.append(list(int(j) for j in temp)) # ruang available days
+		mapping_ruang.append(himpunan) # append himpunan to mapping
+		i += 1
+	return mapping_ruang;
+
 # check constraint
-def constraint_check():
-	
+def constraint_check(days, hour, mmatkul):
+
+	if days in mmatkul[i in range(0,len(mmatkul))][4]:
+		pass
+
+	return False;
 
 # init
-def initialize(sel, ruangan, matkul):
-	pass
+def initialize(sel, ruangan, mmatkul):
 	# sel <- ruangan + matkul
 	# sel_pos <- randomized between 0 and 10 (hours) and 0 and 4 (days)
 	# every assignment decrease count
@@ -75,35 +108,20 @@ def initialize(sel, ruangan, matkul):
 	while count > 0:
 		posx = random.randint(0,4) # days
 		posy = random.randint(0,10) # hours/time
-		mk = getMatkul(matkul)
-		if (constraint_check()):
-			pass
+		
+#		if (constraint_check()):
 
-def eval(selx, sely, matkul):
-	mapping_matkul = []
-	i = 0
-	for x in matkul:
-		himpunan = [] # contains idx, matkulcode, and 
-		himpunan.append(i)
-		himpunan.append(matkul[0]) # matkul code
-		himpunan.append(int(matkul[2])-7) # start hour
-		himpunan.append(matkul[4]) # clock duration
-		himpunan.append(matkul[5]) # matkul available days
-		mapping_matkul.append(himpunan) # append himpunan to mapping
 
-def parse(lists):
-	if len(lists) == 4:
-		mapping_ruang = []
-		for x in lists:
-			himpunan = []
-			himpunan.append(lists[0]) # nama ruangan
-			himpunan.append(int(lists[1][:2]) - 7) # nama 
-	elif len(lists) == 6:
-		pass
-
+def evalMatkul(selx, sely, mmatkul):
+	# mmatkul adalah mapping dari matkul
+#	if (matkul[])
+	pass
 
 ruang = getFile('Testcase.txt')[0]
 mk = getFile('Testcase.txt')[1]
+mkm = mappingMatkul(mk)
+r = mappingRuangan(ruang)
+
 #parseruang && mk
 #print mk
 s = []
