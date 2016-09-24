@@ -31,7 +31,6 @@
 """
 
 import random
-import array
 
 # read file function	
 def getFile(filename):
