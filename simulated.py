@@ -63,13 +63,17 @@ def getFile(filename):
 	listOfParsed.append(listOfParsed_jadwal)
 	return listOfParsed;
 
+# mapping matkul data function
 def mappingMatkul(matkul):
 	mapping_matkul = []
 	i = 0
 	for x in matkul:
 		himpunan = [] # contains idx, matkulcode, and 
 		himpunan.append(i)
-		himpunan.append(matkul[i][0]) # matkul code
+		if (matkul[i][1] == '-'): # matkul code
+			himpunan.append(list(matkul[i][0])) 
+		else:
+			himpunan.append(list(matkul[i][:2]))
 		himpunan.append(int(matkul[i][2][:2])-7) # start hour
 		himpunan.append(int(matkul[i][4])) # clock duration
 		temp = matkul[i][5].split(',')
@@ -78,6 +82,7 @@ def mappingMatkul(matkul):
 		i += 1
 	return mapping_matkul;
 
+# mapping ruang data function
 def mappingRuangan(ruang):
 	mapping_ruang = []
 	i = 0
@@ -93,6 +98,7 @@ def mappingRuangan(ruang):
 		i += 1
 	return mapping_ruang;
 
+# fetch random matkul function
 def getMatkul(mmatkul):
 	result = random.randint(0,len(mmatkul)-1)
 	if len(mmatkul[result]) > 5:
@@ -103,11 +109,24 @@ def getMatkul(mmatkul):
 	mmatkul[result].append(1) # status already taken for config (when eval, pop())
 	return mmatkul[result];
 
-# check constraint
-def constraint_check(days, hour, mmatkul):
+# check constraint of matkul and ruang
+def constraint_check_matkul(days, hour, mmatkul):
 	if days in mmatkul[4]:
 		if mmatkul[2] >= hour:
 			return True;
+	else:
+		return False;
+
+def constraint_check_ruang(days, hour, ruang):
+	if days in ruang[-1]:
+		if hour < ruang[-2] and hour > ruang[-3]:
+			return True;
+	else:
+		return False;
+
+def special(sel, mmatkul):
+	if len(mmatkul[1]) > 1:
+		return True;
 	else:
 		return False;
 
@@ -121,8 +140,22 @@ def initialize(sel, ruangan, mmatkul):
 		posx = random.randint(0,4) # days
 		posy = random.randint(0,10) # hours/time
 		mk = getMatkul(mmatkul)
-		if (constraint_check(posx, posy, mk)):
-			pass # still infinite loop because count haven't decremented
+		ruang = ruangan[random.randint(0,len(ruangan)-1)]
+		if (constraint_check_matkul(posx, posy, mk)):
+			if (constraint_check_ruang(posx, posy, ruang)):
+				print "A"
+				print mk
+				print ruang
+			else:
+				print "B"
+				print mk
+		else:
+			print "C"
+			print posx, posy
+			print mk
+			print ruang
+		count -= 1
+
 
 def evalMatkul(selx, sely, mmatkul):
 	# mmatkul adalah mapping dari matkul
@@ -134,11 +167,11 @@ mk = getFile('Testcase.txt')[1]
 mappedmk = mappingMatkul(mk)
 r = mappingRuangan(ruang)
 s = [] # sel-sel (hari, jam) -> hari = sb-x/second iterated, jam = sb-y/first iterated
-
+initialize(s, r, mappedmk)
 
 # GLOBAL ALGORITHM
 # initialize config
-initialize(s, r, mappedmk)
+# initialize(s, r, mappedmk)
 # Eval
 # random move but not changing the config yet
 # eval the random move
