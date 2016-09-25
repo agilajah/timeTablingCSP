@@ -150,11 +150,14 @@ def initialize(sel, ruangan, mmatkul):
 		if (constraint_check_matkul(posx, posy, mk)):
 			if (constraint_check_ruang(posx, posy, ruang)):
 				print "A"
+				print posx, posy
 				print mk
 				print ruang
 			else:
 				print "B"
+				print posx, posy
 				print mk
+				print ruang
 		else:
 			print "C"
 			print posx, posy
