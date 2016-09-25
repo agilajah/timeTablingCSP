@@ -76,6 +76,7 @@ def mappingMatkul(matkul):
 		else:
 			himpunan.append(list(matkul[i][:2]))
 		himpunan.append(int(matkul[i][2][:2])-7) # start hour
+		himpunan.append(int(matkul[i][3][:2])-7) # finish hour
 		himpunan.append(int(matkul[i][4])) # clock duration
 		temp = matkul[i][5].split(',')
 		himpunan.append(list(int(j) for j in temp)) # matkul available days
@@ -102,10 +103,10 @@ def mappingRuangan(ruang):
 # fetch random matkul function
 def getMatkul(mmatkul):
 	result = random.randint(0,len(mmatkul)-1)
-	if len(mmatkul[result]) > 5:
+	if len(mmatkul[result]) > 6: # mmatkul already got before
 		while True:
 			result = random.randint(0,len(mmatkul)-1)
-			if len(mmatkul[result]) <= 5:
+			if len(mmatkul[result]) <= 6:
 				break
 			else:
 				continue
@@ -114,8 +115,8 @@ def getMatkul(mmatkul):
 
 # check constraint of matkul and ruang
 def constraint_check_matkul(days, hour, mmatkul):
-	if days in mmatkul[4]:
-		if mmatkul[2] >= hour:
+	if days+1 in mmatkul[5]:
+		if mmatkul[2] <= hour or hour <= mmatkul[3]:
 			return True;
 	else:
 		return False;
@@ -146,25 +147,34 @@ def initialize(sel, ruangan, mmatkul):
 		posy = random.randint(0,10) # hours/time
 		ruang = ruangan[random.randint(0,len(ruangan)-1)]
 		mk = getMatkul(mmatkul)
-		ruang = special(ruang, ruangan, mk)
+		ruang = special(ruang, ruangan, mk) # assign member of ruangan to ruang that in mk
 		if (constraint_check_matkul(posx, posy, mk)):
 			if (constraint_check_ruang(posx, posy, ruang)):
-				print "A"
-				print posx, posy
-				print mk
-				print ruang
+				temp = []
+				temp.append(mk)
+				temp.append(ruang)
+				sel[posy][posx].append(temp)
 			else:
-				print "B"
-				print posx, posy
-				print mk
-				print ruang
+				temp = []
+				temp.append(mk)
+				temp.append(ruang)
+				sel[posy][posx].append(temp)
 		else:
-			print "C"
-			print posx, posy
-			print mk
-			print ruang
+			temp = []
+			temp.append(mk)
+			temp.append(ruang)
+			sel[posy][posx].append(temp)
 		count -= 1
+	for x in sel:
+		print x
 
+def init5(sel):
+	i = 0
+	for x in range(0,11):
+		sel.append([])
+		for y in range(0,5):
+			sel[i].append([])
+		i += 1
 
 def evalMatkul(selx, sely, mmatkul):
 	# mmatkul adalah mapping dari matkul
@@ -176,7 +186,10 @@ mk = getFile('Testcase.txt')[1]
 mappedmk = mappingMatkul(mk)
 r = mappingRuangan(ruang)
 s = [] # sel-sel (hari, jam) -> hari = sb-x/second iterated, jam = sb-y/first iterated
+init5(s)
 initialize(s, r, mappedmk)
+# for x in mappedmk:
+# 	print x
 
 # GLOBAL ALGORITHM
 # initialize config
