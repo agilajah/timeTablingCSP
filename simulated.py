@@ -182,9 +182,9 @@ def init5(sel):
 def conflictCounter(sel):
 	# mmatkul adalah mapping dari matkul
 	
-	if (len(sel)) == 2): # there is a conflict
+	if len(sel) == 2: # there is a conflict
 		return 1;
-	elif (len(sel) > 2):
+	elif len(sel) > 2:
 		return (x - 1) + conflictCounter(x - 1);
 
 def nextConfig(sel, ruangan, mmatkul):
@@ -214,3 +214,4 @@ initialize(s, r, mappedmk)
 # random move but not changing the config yet
 # eval the random move
 # case analyze between evals
+
