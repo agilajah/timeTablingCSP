@@ -179,10 +179,13 @@ def init5(sel):
 			sel[i].append([])
 		i += 1
 
-def evalMatkul(selx, sely, mmatkul):
+def conflictCounter(sel):
 	# mmatkul adalah mapping dari matkul
-#	if (matkul[])
-	pass
+	
+	if (len(sel)) == 2): # there is a conflict
+		return 1;
+	elif (len(sel) > 2):
+		return (x - 1) + conflictCounter(x - 1);
 
 def nextConfig(sel, ruangan, mmatkul):
 	pass
