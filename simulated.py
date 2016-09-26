@@ -143,10 +143,13 @@ def initialize(sel, ruangan, mmatkul):
 	# every assignment decrease count
 	count = len(mmatkul)
 	while count > 0:
-		posx = random.randint(0,4) # days
-		posy = random.randint(0,10) # hours/time
 		ruang = ruangan[random.randint(0,len(ruangan)-1)]
 		mk = getMatkul(mmatkul)
+		posx = random.randint(0,4) # days
+		posy = random.randint(0,10) # hours/time
+		looping = 0
+		while not set(range(posy,posy+mk[4])).issubset(set(range(mk[2],mk[3]))):
+			posy = random.randint(0,10) # hours/time
 		ruang = special(ruang, ruangan, mk) # assign member of ruangan to ruang that in mk
 		if (constraint_check_matkul(posx, posy, mk)):
 			if (constraint_check_ruang(posx, posy, ruang)):
@@ -181,19 +184,29 @@ def evalMatkul(selx, sely, mmatkul):
 #	if (matkul[])
 	pass
 
+def nextConfig(sel, ruangan, mmatkul):
+	pass
+
 ruang = getFile('Testcase.txt')[0]
 mk = getFile('Testcase.txt')[1]
 mappedmk = mappingMatkul(mk)
 r = mappingRuangan(ruang)
 s = [] # sel-sel (hari, jam) -> hari = sb-x/second iterated, jam = sb-y/first iterated
+
+for x in mappedmk:
+	print x
 init5(s)
 initialize(s, r, mappedmk)
-# for x in mappedmk:
-# 	print x
+# GLOBAL ALGORITHM IMPLEMENTATION
+"""
+init5(s)
+initialize(s, r, mappedmk)
+
+"""
+
 
 # GLOBAL ALGORITHM
 # initialize config
-# initialize(s, r, mappedmk)
 # Eval
 # random move but not changing the config yet
 # eval the random move
