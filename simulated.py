@@ -180,12 +180,16 @@ def init5(sel):
 		i += 1
 
 def conflictCounter(sel):
-	# mmatkul adalah mapping dari matkul
-	
-	if len(sel) == 2: # there is a conflict
-		return 1;
-	elif len(sel) > 2:
-		return (x - 1) + conflictCounter(x - 1);
+	# menghitung jumlah konflik dalam satu sel
+	pass
+	j = 0
+	for x in sel:
+		if x != []:
+			j += sum(range(len(x)))
+			return j;
+		else:
+			return 0;
+
 
 def nextConfig(sel, ruangan, mmatkul):
 	pass
@@ -200,6 +204,11 @@ for x in mappedmk:
 	print x
 init5(s)
 initialize(s, r, mappedmk)
+i = 0
+for x in s:
+	print "x", i," = ", x
+	print "conflictCounter = ", conflictCounter(x)
+	i += 1
 # GLOBAL ALGORITHM IMPLEMENTATION
 """
 init5(s)
