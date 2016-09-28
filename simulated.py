@@ -34,11 +34,15 @@ import random
 
 # read file function	
 def getFile(filename):
-	try:
+	"""
+		IS : file sudah terisi dan sesuai format Testcase
+		FS : Kembalian merupakan list berisi hasil parse list ruangan dan list jadwal
+	"""
+	try: # buka file di dalam try-except
 		f = open(filename, "r")
 		listOfParsed_ruang = []
 		listOfParsed_jadwal = []
-		listOfParsed = []
+		listOfParsed = [] # akan diisi listOfParsed_jadwal dan listOfParsed_ruang
 		status = ''
 		for aline in f:
 			line = aline.split('\n')
@@ -64,6 +68,7 @@ def getFile(filename):
 
 # mapping matkul data function
 def mappingMatkul(matkul):
+	# hasil parse file (matkul) di mapping ke representasi yang dapat diakses python
 	mapping_matkul = []
 	i = 0
 	for x in matkul:
@@ -86,6 +91,7 @@ def mappingMatkul(matkul):
 
 # mapping ruang data function
 def mappingRuangan(ruang):
+	# hasil parse file (ruang) di mapping ke representasi yang dapat diakses python
 	mapping_ruang = []
 	i = 0
 	for x in ruang:
@@ -102,6 +108,7 @@ def mappingRuangan(ruang):
 
 # fetch random matkul function
 def getMatkul(mmatkul):
+	# mengambil mata kuliah untuk membuat suatu konfigurasi
 	result = random.randint(0,len(mmatkul)-1)
 	if len(mmatkul[result]) > 6: # mmatkul already got before
 		while True:
@@ -115,6 +122,7 @@ def getMatkul(mmatkul):
 
 # check constraint of matkul and ruang
 def constraint_check_matkul(days, hour, mmatkul):
+	# mengecek apakah posisi matkul melanggar constraintnya sendiri/tidak
 	if days+1 in mmatkul[5]:
 		if mmatkul[2] <= hour or hour <= mmatkul[3]:
 			return True;
@@ -122,6 +130,7 @@ def constraint_check_matkul(days, hour, mmatkul):
 		return False;
 
 def constraint_check_ruang(days, hour, ruang):
+	# mengecek apakah posisi ruang melanggar constraintnya sendiri/tidak
 	if days in ruang[-1]:
 		if hour < ruang[-2] and hour > ruang[-3]:
 			return True;
@@ -129,6 +138,7 @@ def constraint_check_ruang(days, hour, ruang):
 		return False;
 
 def special(ruang, ruangan, mmatkul):
+	# melakukan assign ruang yang digunakan matkul apabila matkul tersebut memiliki ruangan wajib
 	if len(mmatkul[1]) > 1:
 		for n in ruangan:
 			if (mmatkul[1][1] in n):
@@ -172,6 +182,7 @@ def initialize(sel, ruangan, mmatkul):
 		print x
 
 def init5(sel):
+	# membuat inisialisasi tabel solusi untuk mempermudah akses
 	i = 0
 	for x in range(0,11):
 		sel.append([])
