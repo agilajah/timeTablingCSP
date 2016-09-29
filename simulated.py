@@ -156,20 +156,24 @@ def initialize(sel, ruangan, mmatkul):
 				temp = []
 				temp.append(mk)
 				temp.append(ruang)
-				sel[posy][posx].append(temp)
+				i = posy
+				for x in range(i, i+mk[4]):
+					sel[i][posx].append(temp)
 			else:
 				temp = []
 				temp.append(mk)
 				temp.append(ruang)
-				sel[posy][posx].append(temp)
+				i = posy
+				for x in range(i, i+mk[4]):
+					sel[i][posx].append(temp)
 		else:
 			temp = []
 			temp.append(mk)
 			temp.append(ruang)
-			sel[posy][posx].append(temp)
+			i = posy
+			for x in range(i, i+mk[4]):
+				sel[i][posx].append(temp)
 		count -= 1
-	for x in sel:
-		print x
 
 def init5(sel):
 	i = 0
@@ -179,7 +183,7 @@ def init5(sel):
 			sel[i].append([])
 		i += 1
 
-def conflictCounter(sel):
+def conflictCounter(sel): # sel adalah list dengan isi list matakuliah&ruangan yang digunakan pada suatu jam dan hari tertentu
 	# menghitung jumlah konflik dalam satu sel
 	pass
 	j = 0
@@ -190,6 +194,21 @@ def conflictCounter(sel):
 		else:
 			return 0;
 
+def popping(sel):
+	pass
+	for x in sel:
+		for y in x:
+			if y != []:
+				y[0][0].pop()
+
+def eval(sel): # sel yang merupakan current config
+	pass
+	jumlahConflict = 0
+	for x in sel:
+		for y in x:
+			if y != []:
+				jumlahConflict += conflictCounter(y)
+	return jumlahConflict;
 
 def nextConfig(sel, ruangan, mmatkul):
 	pass
@@ -197,18 +216,44 @@ def nextConfig(sel, ruangan, mmatkul):
 ruang = getFile('Testcase.txt')[0]
 mk = getFile('Testcase.txt')[1]
 mappedmk = mappingMatkul(mk)
+mapped2 = mappingMatkul(mk)
 r = mappingRuangan(ruang)
 s = [] # sel-sel (hari, jam) -> hari = sb-x/second iterated, jam = sb-y/first iterated
 
-for x in mappedmk:
-	print x
+
+
 init5(s)
 initialize(s, r, mappedmk)
+
+# for x in range(0,5):
+# 	for y in range(0,11):
+# 		if x == 4 and y == 2:
+# 			print s[y][x]
+# 			print "\n"
+
+
+curreval = eval(s)
+popping(s)
+potential = []
 i = 0
-for x in s:
-	print "x", i," = ", x
-	print "conflictCounter = ", conflictCounter(x)
+while True:
+	temp = mapped2
+	print i
+	init5(potential)
+	initialize(potential, r, temp)
+	poteval = eval(potential)
+	popping(potential)
+	
+	if (curreval > poteval):
+		s = potential
+		potential = []
+	elif (curreval == 0):
+		break
+	else:
+		potential = []
+		# RANDOM WALK
 	i += 1
+
 # GLOBAL ALGORITHM IMPLEMENTATION
 """
 init5(s)
@@ -223,4 +268,3 @@ initialize(s, r, mappedmk)
 # random move but not changing the config yet
 # eval the random move
 # case analyze between evals
-
