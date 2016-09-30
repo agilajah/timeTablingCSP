@@ -43,13 +43,6 @@ class Matkul:
         self.__idxDomain %= self.nDomain #supaya tidak out of bond
         self.__addToSlot()
 
-    def idxMinus(self): #ganti domain dengan mengurang indexnya
-        self.__deleteFromSlot()
-        self.__idxDomain -= 1
-        if self.__idxDomain < 0:
-            self.__idxDomain = self.nDomain - 1 #supaya tidak out of bond
-        self.__addToSlot()
-
     def __addToSlot(self): #yang boleh menambah dan menghapus dari slot time hanya class Matkul
         domain = self.getDomain()
         domain.ptrRuangan.slotPlus(self, domain.hari, domain.jamMulai, domain.jamSelesai)
@@ -128,6 +121,15 @@ def initializeRandom():
     #masih pure random
     for matkul in listMatkul:
         matkul.setIdxDomain(random.randint(0, matkul.nDomain - 1))
+        #heuristik = taruh matkul sepagi mungkin
+        domainNow = matkul.getDomain()
+        matkul.idxPlus()
+        domainNew = matkul.getDomain()
+        #lakukan idxPlus terus menerus sampai menemukan jam paling pagi di hari esoknya
+        while(domainNew.jamMulai > domainNow.jamMulai):
+            domainNow = domainNew
+            matkul.idxPlus()
+            domainNew = matkul.getDomain()
 
 def countConflicts():
     del listKonflik[:] #list yang di program utama di hapus dulu karena mau di generate ulang
@@ -164,10 +166,10 @@ def hillClimbing():
         del listKonflikNow[:]
         for matkul in listKonflik:
             listKonflikNow.append(matkul)
-        #mulai heuristik
+        #heuristik = geser matkul yang konflik menjadi tepat setelah matkul lawannya (tidak overlap lagi)
         foundBetter = False
         for matkul in listKonflikNow:
-            #majuin terus sebanyak nDomain kali (1 cycle)
+            #majuin terus sebanyak nDomain kali (1 cycle, kasus terburuk, matkul ini gabisa diapa2in lagi)
             for i in range(matkul.nDomain):
                 step += 1
                 matkul.idxPlus() #saat dimajuin, listKonflik berubah namun listKonflikNow tetap
@@ -197,11 +199,9 @@ listMatkul = []
 listKonflik = []
 
 #program utama
-#"""
 bacaTestcase("Testcase.txt")
 initializeRandom()
 hillClimbing()
 print "Mata Kuliah\tRuang\t\tHari\t\tPukul"
 for matkul in listMatkul:
     matkul.printConsole()
-#"""
