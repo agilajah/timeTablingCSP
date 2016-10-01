@@ -93,8 +93,9 @@ def initHasil(hasilMapping):
 def initConfig(matkul, ruangan, hasil):
 	i = 0
 	for result in hasil:
-		result.append(random.randint(matkul[i][2], matkul[i][3]-matkul[i][4]))
-		result.append(matkul[i][3])
+		x = random.randint(matkul[i][2], matkul[i][3]-matkul[i][4])
+		result.append(x)
+		result.append(x + matkul[i][4])
 		result.append(matkul[i][4])
 		x = random.randint(0,len(matkul[i][5])-1)
 		result.append(matkul[i][5][x])
@@ -108,8 +109,36 @@ def initConfig(matkul, ruangan, hasil):
 def getCurrentSuhu(suhu):
 	return suhu-10;
 
-def countConflict(hasil):
+def countConflict(hasil, ruang):
 	pass
+
+def conflict(hasil):
+	for hari in range(1,6):
+		print hari
+		days = []
+		for h in hasil:
+			if hari == h[5]:
+				day = []
+				day.append(h[0]) # idx matkul
+				day.append(h[2]) # jam awal alokasi
+				day.append(h[3]) # jam akhir alokasi
+				day.append(h[4]) # durasi alokasi
+				days.append(day) # menambahkan 1 matkul ke 1 hari
+		if len(days) > 1:
+			j = ['dummy',[],[],[],[],[]]
+			for jam in range(0,11):
+				n = 0
+				for day in days:
+					if jam in range(day[1], day[2]):
+						n += 1
+				j[hari].append(sumConflict(n))
+			print j
+
+def sumConflict(n): # n == 5 -> 4+3+2+1
+	result = 0
+	for i in range(1,n):
+		result += i
+	return result;
 
 #MAIN PROGRAM
 fetch = getFile('Testcase.txt')
@@ -125,7 +154,7 @@ matkul = initHasil(dataJadwal)
 
 initConfig(dataJadwal, dataRuang, matkul)
 
-
+conflict(matkul)
 for r in matkul:
 	print r
 
