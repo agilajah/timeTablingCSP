@@ -118,7 +118,6 @@ def makeListDomain(matkul, consRuangan):
     return hasil
 
 def initializeRandom():
-    #masih pure random
     for matkul in listMatkul:
         matkul.setIdxDomain(random.randint(0, matkul.nDomain - 1))
         #heuristik = taruh matkul sepagi mungkin
@@ -155,7 +154,7 @@ def countConflicts():
     listKonflik.sort(key=lambda matkul: matkul.nDomain, reverse=True)
     return hasil
 
-def hillClimbing():
+def hillOrStimulated(tempMax, tempMin, threshold, decrease):
     lokalMaks = False #kalo terjebak di lokal maks, bernilai true
     step = 0 #sudah berapa kali iterasi
     listKonflikNow = [] #list konflik lokal (beda dari yang di program utama)
@@ -172,11 +171,18 @@ def hillClimbing():
             #majuin terus sebanyak nDomain kali (1 cycle, kasus terburuk, matkul ini gabisa diapa2in lagi)
             for i in range(matkul.nDomain):
                 step += 1
+                tempMax -= decrease
                 matkul.idxPlus() #saat dimajuin, listKonflik berubah namun listKonflikNow tetap
                 nKonflikNew = countConflicts()
                 if nKonflikNew < nKonflikNow: #bandingkan konflik
                     foundBetter = True
                     break #break for i
+                else: #nKonflikNew >= nKonflikNow
+                    if tempMax > threshold: #masih mungkin random
+                        hasilRandom = random.randint(tempMin, tempMax);
+                        if hasilRandom >= threshold: #ambil walaupun lebih banyak konflik
+                            foundBetter = True
+                            break #break for i
             nKonflikNow = nKonflikNew #berhasil atau tidak menemukan yang lebih baik, tetap ambil nilainya
             if foundBetter == True:
                 break #break for matkul
@@ -199,9 +205,22 @@ listMatkul = []
 listKonflik = []
 
 #program utama
+#hill climbing
+print "====HILL CLIMBING===="
 bacaTestcase("Testcase.txt")
 initializeRandom()
-hillClimbing()
+hillOrStimulated(1, 1, 5, 1)
+print "Mata Kuliah\tRuang\t\tHari\t\tPukul"
+for matkul in listMatkul:
+    matkul.printConsole()
+#stimulated annealing
+print "\n====STIMULATED ANNEALING===="
+del listRuangan[:]
+del listMatkul[:]
+del listKonflik[:]
+bacaTestcase("Testcase.txt")
+initializeRandom()
+hillOrStimulated(100, 1, 5, 1)
 print "Mata Kuliah\tRuang\t\tHari\t\tPukul"
 for matkul in listMatkul:
     matkul.printConsole()
