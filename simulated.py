@@ -96,43 +96,50 @@ def initConfig(matkul, ruangan, hasil):	# matkul == dataJadwal
 	i = 0
 	for result in hasil:
 		x = random.randint(matkul[i][2], matkul[i][3]-matkul[i][4])
+		j = x
 		result.append(x)
 		result.append(x + matkul[i][4])
 		result.append(matkul[i][4])
 		x = random.randint(0,len(matkul[i][5])-1)
 		result.append(matkul[i][5][x])
+		hari = matkul[i][5][x]
 		if (len(matkul[i][1]) > 1):
+			for ruang in ruangan:
+				if (matkul[i][1][1] in ruang):
+					idx = ruang[0]
+					break
+			result.append(ruangan[idx][0])
 			result.append(matkul[i][1][1])
 		else:
 			y = random.randint(0,len(ruangan)-1)
-			stop = False
-			j = 0
-			while not (x in ruangan[y][4] and range(result[2],result[3]) in range(ruangan[y][2],ruangan[y][3])) and not stop:
-				y = next(y, 0, len(ruangan))
-				if (j >= len(ruangan)):
-					stop = True
-				j += 1
+			temp = 0
+			while not set(range(j,j+matkul[i][4])).issubset(set(range(ruangan[y][2],ruangan[y][3]))) or not hari in ruangan[y][-1]:
+				print "te"
+				# cek hari
+				if (hari == 5):
+					hari = 1
+				else:
+					hari += 1
+				# cek ruangan
+				if y != len(ruangan)-1 and temp <= len(ruangan):
+					y += 1
+					temp += 1
+				elif temp > len(ruangan):
+					break
+				else:
+					y = 0
+			result.pop()
+			result.append(hari)
+			result.append(ruangan[y][0])
 			result.append(ruangan[y][1])
 		i += 1
 
-def next(value, lowest, highest): 	# value == current value
-																			# lowest == lowest possible value
-																			# highest == highest possible value + 1
-	temp = value + 1
-	if (temp == highest):
-		temp = lowest
-	else:
-		temp = value
-	return temp;
-
-def getCurrentSuhu(suhu): # suhu == current suhu before
-	return suhu-10;
 
 def unusedRuangan(matkulWithRuangan, listRuangan): 	# matkulWithRuangan == hasilinit
 																										# listRuangan == dataRuang
 	daftarRuang = []
 	for ruangan in listRuangan:
-		daftarRuang.append(ruangan[1])
+		daftarRuang.append(ruangan[0])
 	for jadwal in matkulWithRuangan:
 		if jadwal[6] in daftarRuang:
 			daftarRuang.remove(jadwal[6])
@@ -154,51 +161,70 @@ def unusedDays(matkulWithDays): # matkulWithDays == hasilinit
 	return listDays
 
 def conflict(hasil): # hasil == config, complete assignment
-	j = ['dummy',[],[],[],[],[]]
+	conf = 0
 	for hari in range(1,6):
 		days = []
 		for h in hasil:
 			if hari == h[5]:
 				day = []
-				day.append(h[0]) # idx matkul
-				day.append(h[2]) # jam awal alokasi
-				day.append(h[3]) # jam akhir alokasi
-				day.append(h[4]) # durasi alokasi
-				days.append(day) # menambahkan 1 matkul ke 1 hari
-		if len(days) > 1:
-			for jam in range(0,11):
-				n = 0
-				for day in days:
-					if jam in range(day[1], day[2]):
-						n += 1
-				j[hari].append(sumConflict(n))
-	return j;
-
-def sumConflict(n): # n == 5 -> 4+3+2+1
-	result = 0
-	for i in range(1,n):
-		result += i
-	return result;
+				days.append(h) # menambahkan 1 matkul ke 1 slot hari
+		
+		# membandingkan kemungkinan semua
+		for i in range(0,len(days)-1):
+			for j in range(i,len(days)):
+				if i == j:
+					continue
+				else:
+					check = set(range(days[i][2],days[i][3])).intersection(set(range(days[j][2],days[j][3])))
+					if check != set([]):
+						conf += len(list(check))
+					else:
+						continue
+	return conf;
 
 def countConflict(hasil, ruang):	# hasil == config, complete assignment
 																	# ruang == dataRuang
-	listConflict = conflict(hasil)
-	hasil = 0
-	for days in listConflict:
-		if days == [] or days == 'dummy':
-			continue
-		else:
-			listIdxConflict = [i for i,j in enumerate(days) if j != 0]
-			temp = 0
-			while listIdxConflict != []:
-				temp += days[listIdxConflict[-1]]
-				listIdxConflict.pop()
-			hasil += temp
-	return hasil;
+	for hari in range(1,6):
+		days = []
+		for h in hasil:
+			if hari == h[5]:
+				day = []
+				days.append(h) # menambahkan 1 matkul ke 1 hari
+				days.append(r)
+
 
 def findConflict(hasil):	# hasil == config, complete assignment
 													# return value : list of idx_jadwal
 	pass
+	confs[[], []] # idx == 0, jadwal bentrok | # idx == 1
+	for hari in range(1,6):
+		days = []
+		for h in hasil:
+			if hari == h[5]:
+				day = []
+				days.append(h) # menambahkan 1 matkul ke 1 slot hari
+		
+		# membandingkan kemungkinan semua
+		for i in range(0,len(days)-1):
+			for j in range(i,len(days)):
+				if i == j:
+					continue
+				else:
+					check = set(range(days[i][2],days[i][3])).intersection(set(range(days[j][2],days[j][3])))
+					if check != set([]):
+						pass
+						# conf += len(list(check)) 
+					else:
+						continue
+	return confs;
+	
+def getCurrentSuhu(suhu): # suhu == current suhu before
+	return suhu-10;
+
+def nextConfig(hasil, listOfConflicts):	# hasil == current config
+																				# listOfConflicts == conflict position
+	pass
+
 
 #MAIN PROGRAM
 fetch = getFile('Testcase.txt')
@@ -212,9 +238,17 @@ namaRuang = getNamaRuang(dataRuang)
 
 matkul = initHasil(dataJadwal)
 
+print "ruangan :"	
+for x in dataRuang:
+	print x
+
 initConfig(dataJadwal, dataRuang, matkul)
 
-print unusedDays(matkul)
+for x in matkul:
+	print x
+print "conflict = ", conflict(matkul)
+
+# print unusedDays(matkul)
 
 # for r in j:
 # 	if r != 'dummy':
