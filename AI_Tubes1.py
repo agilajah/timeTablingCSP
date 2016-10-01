@@ -1,3 +1,4 @@
+from __future__ import division
 import random
 
 class Ruangan:
@@ -9,6 +10,7 @@ class Ruangan:
         self.sel = [] #tabel projeksi antara jam dan hari (slot time), mempermudah menghitung konflik
         for i in range(11):
             self.sel.append([[], [], [], [], []]) #tiap sel berisi list of Matkul
+        self.selAvailable = (self.jamTutup - self.jamBuka) * len(self.hari)
 
     def slotPlus(self, matkul, hari, jamMulai, jamSelesai): #tambahkan matkul ke slot time
         for i in range(jamMulai, jamSelesai):
@@ -17,6 +19,29 @@ class Ruangan:
     def slotMinus(self, matkul, hari, jamMulai, jamSelesai): #hapus matkul dari slot time
         for i in range(jamMulai, jamSelesai):
             self.sel[i - 7][hari - 1].remove(matkul) #dikurang 7 untuk jam, dikurang 1 untuk hari
+
+    def deleteAllSel(self):
+        for jam in self.sel:
+            for hari in jam:
+                del hari[:]
+
+    def countFilledSel(self):
+        hasil = 0
+        for i in range(11): #cek tiap sel
+            if i + 7 >= self.jamBuka and i + 7 <= self.jamTutup:
+                for j in self.hari:
+                    if len(self.sel[i][int(j) - 1]) > 0: #ada isinya
+                        hasil += 1
+        return hasil
+
+    def countFitness(self):
+        hasil = 0
+        for i in range(11): #cek tiap sel
+            if i + 7 >= self.jamBuka and i + 7 <= self.jamTutup:
+                for j in self.hari:
+                    if len(self.sel[i][int(j) - 1]) == 1: #tidak konflik
+                        hasil += 1
+        return hasil
 
 class Matkul:
     def __init__(self, nama, jamBuka, jamTutup, sks, hari):
@@ -64,7 +89,7 @@ class Matkul:
             stringHari = "Kamis"
         else: #idxHari == 5
             stringHari = "Jumat"
-        print self.nama, "\t\t", domain.ptrRuangan.nama, "\t\t", stringHari, "\t\t", domain.jamMulai, "-", domain.jamSelesai
+        print self.nama, "\t", domain.ptrRuangan.nama, "\t", stringHari, "\t", domain.jamMulai, "-", domain.jamSelesai
 
 class Domain:
     def __init__(self, ptrRuangan, hari, jamMulai, jamSelesai):
@@ -189,7 +214,7 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
             elif matkul == listKonflikNow[len(listKonflikNow) - 1]:
                 lokalMaks = True #matkul terakhir, tetep gak nemu lebih baik
         if lokalMaks == True: #gak bisa ngapa2in lagi udah mentok
-            print "LOKAL MAKSIMUM"
+            print "    LOKAL MAKSIMUM"
             break #break while
     #sudah iterasi sebanyak step, atau sudah menemukan solusi
     if nKonflikNow == 0:
@@ -199,26 +224,94 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
         for matkul in listKonflik:
             print " ", matkul.nama
 
-#variabel program utama
+def geneticAlgorithm():
+    #fitness function max kalau semua matkul domainnya alldiff
+    fitnessMax = 0
+    for matkul in listMatkul:
+        fitnessMax += matkul.sks
+    fitness = []
+    #genetic algorithm
+    keturunan = 0
+    while True:
+        #hitung fitness tiap gen
+        del fitness[:]
+        for i in range(len(listGen)):
+            for ruang in listRuangan:
+                ruang.deleteAllSel()
+            for j in range(len(listGen[i])):
+                listMatkul[j].setIdxDomain(listGen[i][j])
+            fitness.append(0)
+            for ruang in listRuangan:
+                fitness[i] += ruang.countFitness() #total sel yang tidak konflik
+            if fitness[i] == fitnessMax:
+                print "SOLUSI DITEMUKAN DALAM", keturunan, "GENERASI:"
+        #cari gen terjelek dan terbagus
+        idxMin = fitness.index(min(fitness))
+        idxMax = fitness.index(max(fitness))
+        keturunan += 1
+        if keturunan == 10:
+            #udah sekian kali kawin silang dan gak nemu, keluarin aja fitness yang terbaik
+            del listKonflik[:]
+            for ruang in listRuangan:
+                ruang.deleteAllSel()
+            for i in range(len(listGen[idxMax])):
+                listMatkul[i].setIdxDomain(listGen[idxMax][i])
+            print countConflicts(), "KONFLIK DALAM", keturunan, "GENERASI:"
+            for matkul in listKonflik:
+                print " ", matkul.nama
+            return
+        else:
+            #paling jelek timpa dengan paling bagus
+            for i in range(len(listMatkul)):
+                listGen[idxMin][i] = listGen[idxMax][i]
+            #kawin silang tanpa mutasi
+            idxBelah = random.randint(1, len(listMatkul) - 2)
+            for i in range(idxBelah, len(listMatkul)):
+                #swap idx 0 dan 1
+                temp = listGen[0][i]
+                listGen[0][i] = listGen[1][i]
+                listGen[1][i] = temp
+                #swap idx 2 dan 3
+                temp = listGen[2][i]
+                listGen[2][i] = listGen[3][i]
+                listGen[3][i] = temp
+
+def restart():
+    del listKonflik[:]
+    for ruang in listRuangan:
+        ruang.deleteAllSel()
+    initializeRandom()
+
+def printHasil():
+    print "MATKUL\tRUANG\tHARI\tPUKUL"
+    for matkul in listMatkul:
+        matkul.printConsole()
+    totalSel = 0
+    selTerisi = 0
+    for ruang in listRuangan:
+        totalSel += ruang.selAvailable
+        selTerisi += ruang.countFilledSel()
+    print "Persentasi keefektifan =", "%.2f" % (selTerisi / totalSel * 100), "persen.\n"
+
+#PROGRAM UTAMA
 listRuangan = []
 listMatkul = []
 listKonflik = []
-
-#program utama
+listGen = [[], [], [], []] #list of list of idxDomain untuk GA only
+bacaTestcase("Testcase.txt")
 print "====HILL CLIMBING===="
-bacaTestcase("Testcase.txt")
-initializeRandom()
-hillOrStimulated(1, 1, 5, 1)
-print "Mata Kuliah\tRuang\t\tHari\t\tPukul"
-for matkul in listMatkul:
-    matkul.printConsole()
-print "\n====STIMULATED ANNEALING===="
-del listRuangan[:]
-del listMatkul[:]
-del listKonflik[:]
-bacaTestcase("Testcase.txt")
-initializeRandom()
+restart()
+hillOrStimulated(1, 1, 5, 1) #atur temperatur menjadi low
+printHasil()
+print "====STIMULATED ANNEALING===="
+restart()
 hillOrStimulated(100, 1, 5, 1)
-print "Mata Kuliah\tRuang\t\tHari\t\tPukul"
-for matkul in listMatkul:
-    matkul.printConsole()
+printHasil()
+print "====GENETIC ALGORITHM (4 GENES)===="
+for gen in listGen:
+    del gen[:]
+    #initializeRandom() tanpa heuristik
+    for matkul in listMatkul:
+        gen.append(random.randint(0, matkul.nDomain - 1)); #masukkan ke gen idxDomain nya saja
+geneticAlgorithm()
+printHasil()
