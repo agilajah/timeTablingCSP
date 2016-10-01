@@ -108,7 +108,7 @@ def makeListDomain(matkul, consRuangan):
                         #cari jam yang cocok, mainkan batasan jam yang dibutuhkan Matkul dengan batasan jam yang tersedia di Ruangan pada hari ini
                         jamMulai = matkul.jamBuka
                         jamSelesai = jamMulai + matkul.sks
-                        while jamSelesai <= ruang.jamTutup:
+                        while jamSelesai <= ruang.jamTutup and jamSelesai <= matkul.jamTutup:
                             if jamMulai >= ruang.jamBuka:
                                 #dapat 1 kandidat Matkul BISA ditempatkan di Ruangan ini, di hari ini, dan di jam segini
                                 newObjekDomain = Domain(ruang, hariRuangan, jamMulai, jamSelesai)
@@ -205,7 +205,6 @@ listMatkul = []
 listKonflik = []
 
 #program utama
-#hill climbing
 print "====HILL CLIMBING===="
 bacaTestcase("Testcase.txt")
 initializeRandom()
@@ -213,7 +212,6 @@ hillOrStimulated(1, 1, 5, 1)
 print "Mata Kuliah\tRuang\t\tHari\t\tPukul"
 for matkul in listMatkul:
     matkul.printConsole()
-#stimulated annealing
 print "\n====STIMULATED ANNEALING===="
 del listRuangan[:]
 del listMatkul[:]
