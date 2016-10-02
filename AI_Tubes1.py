@@ -337,7 +337,7 @@ listRuangan = []
 listMatkul = []
 listKonflik = []
 listGen = [[], [], [], []] #list of list of idxDomain for GA only
-bacaTestcase("Testcasetest.txt")
+bacaTestcase("Testcase.txt")
 execHC()
 execSA()
 execGA()
