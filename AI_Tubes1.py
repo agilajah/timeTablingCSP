@@ -150,6 +150,7 @@ def makeListDomain(matkul, consRuangan):
                                 hasil.append(newObjekDomain)
                             jamMulai += 1
                             jamSelesai += 1
+    hasil.sort(key=lambda domain: domain.jamMulai)
     return hasil
 
 def initializeRandom():
@@ -255,6 +256,7 @@ def geneticAlgorithm():
                 fitness[i] += ruang.countFitness()
             if fitness[i] == fitnessMax:
                 print "SOLUSI DITEMUKAN DALAM GENERASI", keturunan
+                return
         #cari gen terjelek dan terbagus
         idxMin = fitness.index(min(fitness))
         idxMax = fitness.index(max(fitness))
