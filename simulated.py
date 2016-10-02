@@ -28,6 +28,10 @@
 	Room and Course mapping :
 		room : r[]
 		course : mappedmk[]
+	sel =>
+		0 idx_jadwal
+		1 idx_ruang
+		2
 """
 
 import random
@@ -168,8 +172,6 @@ def initialize(sel, ruangan, mmatkul):
 			temp.append(ruang)
 			sel[posy][posx].append(temp)
 		count -= 1
-	for x in sel:
-		print x
 
 def init5(sel):
 	i = 0
@@ -190,6 +192,12 @@ def conflictCounter(sel):
 		else:
 			return 0;
 
+def conflicts(sels):
+	i = 0
+	for x in s:
+		print "x", i," = ", x
+		print "conflictCounter = ", conflictCounter(x)
+		i += 1
 
 def nextConfig(sel, ruangan, mmatkul):
 	pass
@@ -200,15 +208,11 @@ mappedmk = mappingMatkul(mk)
 r = mappingRuangan(ruang)
 s = [] # sel-sel (hari, jam) -> hari = sb-x/second iterated, jam = sb-y/first iterated
 
-for x in mappedmk:
-	print x
+# for x in mappedmk:
+# 	print x
 init5(s)
 initialize(s, r, mappedmk)
-i = 0
-for x in s:
-	print "x", i," = ", x
-	print "conflictCounter = ", conflictCounter(x)
-	i += 1
+conflicts(s)
 # GLOBAL ALGORITHM IMPLEMENTATION
 """
 init5(s)
