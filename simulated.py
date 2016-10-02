@@ -85,8 +85,8 @@ def initHasil(hasilMapping): # hasilMapping == dataJadwal
 	kembalian = []
 	for x in hasilMapping:
 		temp = []
-		temp.append(x[0])
-		temp.append(x[1][0])
+		temp.append(x[0]) # nomor matkul
+		temp.append(x[1][0]) # nama matkul
 		kembalian.append(temp)
 	return kembalian;
 
@@ -97,19 +97,21 @@ def initConfig(matkul, ruangan, hasil):	# matkul == dataJadwal
 	for result in hasil:
 		x = random.randint(matkul[i][2], matkul[i][3]-matkul[i][4])
 		j = x
-		result.append(x)
-		result.append(x + matkul[i][4])
-		result.append(matkul[i][4])
+		result.append(x) # 2 awal alokasi matkul
+		result.append(x + matkul[i][4]) # 3 akhir alokasi matkul
+		result.append(matkul[i][4]) # 4 durasi matkul
 		x = random.randint(0,len(matkul[i][5])-1)
-		result.append(matkul[i][5][x])
+		result.append(matkul[i][5][x]) # 5 hari alokasi matkul
 		hari = matkul[i][5][x]
 		if (len(matkul[i][1]) > 1):
 			for ruang in ruangan:
 				if (matkul[i][1][1] in ruang):
 					idx = ruang[0]
 					break
-			result.append(ruangan[idx][0])
-			result.append(matkul[i][1][1])
+			result.append(ruangan[idx][0]) # 6 idx ruangan
+			result.append(matkul[i][1][1]) # 7 nama ruangan
+			result.append(ruangan[idx][3]) # 8 jam buka ruangan
+			result.append(ruangan[idx][4]) # 9 jam tutup ruangan
 		else:
 			y = random.randint(0,len(ruangan)-1)
 			temp = 0
@@ -132,6 +134,8 @@ def initConfig(matkul, ruangan, hasil):	# matkul == dataJadwal
 			result.append(hari)
 			result.append(ruangan[y][0])
 			result.append(ruangan[y][1])
+			result.append(ruangan[y][3])
+			result.append(ruangan[y][4])
 		i += 1
 
 
@@ -166,7 +170,6 @@ def conflict(hasil): # hasil == config, complete assignment
 		days = []
 		for h in hasil:
 			if hari == h[5]:
-				day = []
 				days.append(h) # menambahkan 1 matkul ke 1 slot hari
 		
 		# membandingkan kemungkinan semua
@@ -184,27 +187,24 @@ def conflict(hasil): # hasil == config, complete assignment
 
 def countConflict(hasil, ruang):	# hasil == config, complete assignment
 																	# ruang == dataRuang
-	for hari in range(1,6):
-		days = []
-		for h in hasil:
-			if hari == h[5]:
-				day = []
-				days.append(h) # menambahkan 1 matkul ke 1 hari
-				days.append(r)
+	pass
 
 
-def findConflict(hasil):	# hasil == config, complete assignment
+def findConflict(hasil, ruang):	# hasil == config, complete assignment
 													# return value : list of idx_jadwal
 	pass
 	confs[[], []] # idx == 0, jadwal bentrok | # idx == 1
 	for hari in range(1,6):
 		days = []
-		for h in hasil:
+		for h in hasil: # menambahkan matkul yang diassign di hari tersebut
 			if hari == h[5]:
-				day = []
-				days.append(h) # menambahkan 1 matkul ke 1 slot hari
+				days.append(h)
+
+		room = []
+		for r in ruang:
+			if hari == r[5]:
 		
-		# membandingkan kemungkinan semua
+		# membandingkan kemungkinan semua konflik di satu hari
 		for i in range(0,len(days)-1):
 			for j in range(i,len(days)):
 				if i == j:
@@ -213,7 +213,15 @@ def findConflict(hasil):	# hasil == config, complete assignment
 					check = set(range(days[i][2],days[i][3])).intersection(set(range(days[j][2],days[j][3])))
 					if check != set([]):
 						pass
-						# conf += len(list(check)) 
+						temp = []
+						temp.append(days[i]) # menambahkan matakuliah yang konflik di append bersama jam awal dan jam akhir konflik
+						temp.append(days[j])
+						temp.append(list(check)[0])
+						temp.append(list(check)[1])
+						confs[0].append(temp)
+						# menambahkan ruangan apabila konflik
+						# temp = []
+						# temp.append(days[])
 					else:
 						continue
 	return confs;
@@ -238,8 +246,8 @@ namaRuang = getNamaRuang(dataRuang)
 
 matkul = initHasil(dataJadwal)
 
-print "ruangan :"	
-for x in dataRuang:
+print "jadwal :"	
+for x in dataJadwal:
 	print x
 
 initConfig(dataJadwal, dataRuang, matkul)
@@ -293,18 +301,21 @@ print "conflict = ", conflict(matkul)
 	dataRuang=>
 				0 idx
 				1 nama
-				2 batas bawah jam alokasi
-				3 batas atas jam alokasi
-				4 batas hari alokasi
+				2 jam buka ruangan
+				3 jam tutup ruangan
+				4 hari buka ruangan
 
 	hasilinit=>
-				0 idx
+				0 idx matakuliah
 				1 nama matakuliah
 				2 jam alokasi awal matakuliah
 				3 jam alokasi akhir matakuliah
 				4 durasi alokasi jam matakuliah
 				5 hari alokasi mata kuliah
-				6 ruangan
+				6 idx ruangan
+				7 ruangan
+				8 jam buka ruangan
+				9 jam tutup ruangan
 
 """
 
