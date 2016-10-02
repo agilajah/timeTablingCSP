@@ -1,0 +1,38 @@
+variabel : Matkul
+domain : <Ruangan, jamMulai, hari>
+constraint :
+1. syarat ruangan pada jadwal
+2. syarat jam dan hari pada jadwal
+3. alldiff, tidak konflik pada ruang, jam, dan hari yang sama
+
+struktur data
+- 3 kelas yaitu Ruangan, Matkul, Domain
+- create objek-objek Ruangan dan Matkul sesuai Testcase
+- objek-objek tersebut didaftarkan pada listRuangan dan listMatkul di program utama
+- untuk setiap objek Matkul, create objek-objek Domain yaitu kemungkinan-kemungkinan dimana Matkul bisa ditempatkan
+- objek-objek Domain tersebut didaftarkan pada listDomain di tiap Matkul
+- gen untuk GA berupa index domain (idxDomain) masing-masing Matkul. ingat, INDEX nya, bukan Domain nya
+
+alur hill climbing dan stimulated annealing
+1. inisialisasi, yaitu tiap Matkul tentukan salah satu domain dari listDomain secara heuristik, dengan menggunakan indekxnya (idxDomain)
+2. hitung konflik
+3. selama masih ada konflik dan tidak di lokal maksimum, lakukan:
+3.a. geser idxDomain (ganti Domain) salah satu Matkul yang konflik
+3.b. bandingkan konflik sekarang (nKonflikNew) dengan tadi (nKonflikNow)
+3.c. jika lebih kecil maka kembali ke poin (3)
+3.d. jika lebih besar maka cek temperatur apakah bisa di toleransi. untuk HC, temperatur selalu di atur rendah (tidak ada toleransi)
+3.e. jika masih bisa di toleransi, maka statusnya sama seperti poin (3.c)
+3.f. jika tidak bisa di toleransi, geser Domain matkul lain, kembali ke poin (3.a)
+3.g. jika semua matkul yang konflik sudah dicoba digeser Domain nya tetapi tidak ada konflik yang lebih kecil, berarti terjebak di lokal maksimum
+
+alur genetic algorithm
+1. inisialisasi mirip seperti hc&sa tanpa heuristik, sebanyak 4 kali, dibentuk menjadi 4 gen
+2. selama belum mencapai generasi ke-5, lakukan:
+2.a. hitung fitness tiap gen, fitness functionnya yaitu "total berapa sel yang tidak konflik di setiap Ruangan"
+2.b. jika sudah keturunan ke-5 dan belum ada gen yang punya fitness maksimum (masih ada konflik), maka kembalikan gen dengan fitness terbesar
+2.c. jika belum, maka gen dengan fitness terendah dibuang dan diganti dengan gen dengan fitness tertinggi
+2.d. lakukan kawin silang gen 1 dengan 2, gen 3 dengan 4, dengan panjang yang random
+
+catatan untuk GA:
+- tidak ada mutasi karena ribet
+- maka dari itu, dibatasi sampai generasi ke-5. karena jika > 5, semua gen menjadi monoton
