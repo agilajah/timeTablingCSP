@@ -223,15 +223,6 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
                             foundBetter = True
                             break #break for i
                         elif hasilRandom == 0: # tidak mengambil konfigurasi baru
-                            continue
-            nKonflikNow = nKonflikNew
-            if foundBetter == True:
-                break #break for matkul, gausah geser matkul lain juga
-            elif matkul == listKonflikLokal[len(listKonflikLokal) - 1]:
-                lokalMaks = True #semua domain dari semua matkul yang konflik sudah dicoba, gaada yang lebih baik
-                print "    LOKAL MAKSIMUM"
-        #keterangan tambahan : yang dicoba diganti domainnya HANYA matkul yg konflik,
-        #sedangkan matkul lain yang sudah fit pada selnya tidak di ubah
     #hasil : dapat solusi atau terjebak lokal maksimum
     if nKonflikNow == 0:
         print "SOLUSI DITEMUKAN DALAM", step, "ITERASI"
@@ -364,7 +355,7 @@ def execSA():
     print "====STIMULATED ANNEALING===="
     restart()
     initializeRandom()
-    hillOrStimulated(100, 1, 5, 1)
+    hillOrStimulated(100, 1, 50, 1)
     printHasil()
 
 def execGA():
