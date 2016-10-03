@@ -1,4 +1,5 @@
 from __future__ import division
+from math import exp
 import random
 
 """
@@ -130,8 +131,8 @@ def bacaTestcase(namaFile):
         elif status == "j":
             parsed = line.split(";") #string nama, string constraint ruang, int jamBuka, int jamTutup, int sks, int[] hari
             newObjekMatkul = Matkul(parsed[0], parsed[2], parsed[3], parsed[4], parsed[5].split(","))
-            domain = makeListDomain(newObjekMatkul, parsed[1]) #cari tempat dan waktu mana saja yang memungkinkan
-            newObjekMatkul.addListDomain(domain) #daftarkan domain-domain tersebut ke listDomain
+            listDomain = makeListDomain(newObjekMatkul, parsed[1]) #cari tempat dan waktu mana saja yang memungkinkan
+            newObjekMatkul.addListDomain(listDomain) #daftarkan domain-domain tersebut ke listDomain
             listMatkul.append(newObjekMatkul) #daftarkan objek baru ke list
 
 def makeListDomain(matkul, consRuangan):
@@ -153,6 +154,7 @@ def makeListDomain(matkul, consRuangan):
                                 hasil.append(newObjekDomain)
                             jamMulai += 1
                             jamSelesai += 1
+    #sort berdasarkan jam, paling pagi paling depan
     hasil.sort(key=lambda domain: domain.jamMulai)
     return hasil
 
@@ -192,7 +194,7 @@ def countConflicts():
     listKonflik.sort(key=lambda matkul: matkul.nDomain, reverse=True)
     return hasil
 
-def hillOrStimulated(tempMax, tempMin, threshold, decrease):
+def hillOrStimulated(temp, decrease):
     lokalMaks = False #kalo terjebak di lokal maks, bernilai true
     step = 0 #sudah berapa kali iterasi
     listKonflikLokal = [] #list konflik lokal (beda dari yang di program utama)
@@ -209,20 +211,27 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
             #majuin terus sebanyak nDomain kali (kasus terburuk yaitu semua domain dicoba dan gaada yang lebih baik)
             for i in range(matkul.nDomain):
                 step += 1 #iterasi bertambah
-                tempMax -= decrease #toleransi berkurang
+                temp -= decrease #toleransi berkurang
                 matkul.idxPlus()
                 nKonflikNew = countConflicts() #prosedur ini merubah list konflik program utama saja (lokal tetap aman)
                 if nKonflikNew < nKonflikNow: #ternyata domain setelah dimajuin 1 jadi lebih baik
                     foundBetter = True
                     break #break for i
-                else: #sama aja atau bahkan lebih buruk, cek apakah bisa ditolerir untuk tetap diambil
-                    probability = exp(abs(nKonflikNow - nKonflikNew)*1000/tempMax)
-                    if probability > threshold: #random walk
-                        hasilRandom = random.randint(0,1);
-                        if hasilRandom == 1: #ambil walaupun lebih banyak konflik
+                else: #nKonflikNew >= nKonflikNow
+                    if temp > 0: #khusus SA
+                        #berapa peluang bisa mengambil yang lebih buruk (dalam persen, integer)
+                        persenProb = int(exp((nKonflikNow - nKonflikNew)/temp) * 100)
+                        hasilRandom = random.randint(0, 100)
+                        #cek apakah diambil
+                        if hasilRandom <= persenProb:
                             foundBetter = True
                             break #break for i
-                        elif hasilRandom == 0: # tidak mengambil konfigurasi baru
+            nKonflikNow = nKonflikNew
+            if foundBetter == True:
+            	break #break for matkul, gausah geser matkul lain lagi
+            elif matkul == listKonflikLokal[len(listKonflikLokal) - 1]:
+            	lokalMaks = True #semua domain dari semua matkul yang konflik sudah dicoba, gaada yang lebih baik
+            	print "    LOKAL MAKSIMUM"
     #hasil : dapat solusi atau terjebak lokal maksimum
     if nKonflikNow == 0:
         print "SOLUSI DITEMUKAN DALAM", step, "ITERASI"
@@ -348,14 +357,14 @@ def execHC():
     print "====HILL CLIMBING===="
     restart()
     initializeRandom()
-    hillOrStimulated(1, 1, 5, 1) #atur temperatur menjadi low
+    hillOrStimulated(0, 1) #atur temperatur menjadi 0
     printHasil()
 
 def execSA():
     print "====STIMULATED ANNEALING===="
     restart()
     initializeRandom()
-    hillOrStimulated(100, 1, 50, 1)
+    hillOrStimulated(50, 1)
     printHasil()
 
 def execGA():
