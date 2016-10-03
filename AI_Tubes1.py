@@ -80,6 +80,7 @@ class Matkul:
     def __addToSlot(self): #yang boleh menambah ke slot time hanya class Matkul
         domain = self.getDomain()
         domain.ptrRuangan.slotPlus(self, domain.hari, domain.jamMulai, domain.jamSelesai)
+<<<<<<< HEAD
 
     def __deleteFromSlot(self): #yang boleh menghapus dari slot time hanya class Matkul
         domain = self.getDomain()
@@ -99,7 +100,30 @@ class Matkul:
         else: #idxHari == 5
             stringHari = "Jumat"
         print self.nama, "\t", domain.ptrRuangan.nama, "\t", stringHari, "\t", domain.jamMulai, "-", domain.jamSelesai
+=======
+>>>>>>> 57a7ac5650d0067c3198af6d9cfd7f8fc2689330
 
+    def __deleteFromSlot(self): #yang boleh menghapus dari slot time hanya class Matkul
+        domain = self.getDomain()
+        domain.ptrRuangan.slotMinus(self, domain.hari, domain.jamMulai, domain.jamSelesai)
+
+    def printConsole(self): #print data-data ke console, gaperlu dimengerti ini hiasan doang
+        domain = self.getDomain()
+        idxHari = domain.hari
+        if idxHari == 1:
+            stringHari = "Senin"
+        elif idxHari == 2:
+            stringHari = "Selasa"
+        elif idxHari == 3:
+            stringHari = "Rabu "
+        elif idxHari == 4:
+            stringHari = "Kamis"
+        else: #idxHari == 5
+            stringHari = "Jumat"
+        if len(domain.ptrRuangan.nama) <= 4:
+            print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
+        else:
+            print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
 class Domain:
     #hanya butuh pointer ke Ruangan, karena objek dia sendiri sudah dipegang oleh class Matkul di dalam listDomain
     def __init__(self, ptrRuangan, hari, jamMulai, jamSelesai):
@@ -294,7 +318,13 @@ def restart(): #hapus data agar bisa dipakai ulang
         ruang.deleteAllSel()
 
 def printHasil(): #gaperlu dimengerti, hiasan print doang
+<<<<<<< HEAD
     print "MATKUL\tRUANG\tHARI\tPUKUL"
+=======
+    print "========================================================================="
+    print "| MATKUL\t| RUANG\t\t| HARI\t\t\t| PUKUL\t\t|"
+    print "========================================================================="
+>>>>>>> 57a7ac5650d0067c3198af6d9cfd7f8fc2689330
     for matkul in listMatkul:
         matkul.printConsole()
     totalSel = 0
