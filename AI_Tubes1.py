@@ -93,12 +93,15 @@ class Matkul:
         elif idxHari == 2:
             stringHari = "Selasa"
         elif idxHari == 3:
-            stringHari = "Rabu"
+            stringHari = "Rabu "
         elif idxHari == 4:
             stringHari = "Kamis"
         else: #idxHari == 5
             stringHari = "Jumat"
-        print self.nama, "\t", domain.ptrRuangan.nama, "\t", stringHari, "\t", domain.jamMulai, "-", domain.jamSelesai
+        if len(domain.ptrRuangan.nama) <= 4:
+            print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
+        else:
+            print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
 
 class Domain:
     #hanya butuh pointer ke Ruangan, karena objek dia sendiri sudah dipegang oleh class Matkul di dalam listDomain
@@ -335,7 +338,9 @@ def restart(): #hapus data agar bisa dipakai ulang
         ruang.deleteAllSel()
 
 def printHasil(): #gaperlu dimengerti, hiasan print doang
-    print "MATKUL\tRUANG\tHARI\tPUKUL"
+    print "========================================================================="
+    print "| MATKUL\t| RUANG\t\t| HARI\t\t\t| PUKUL\t\t|"
+    print "========================================================================="
     for matkul in listMatkul:
         matkul.printConsole()
     totalSel = 0
