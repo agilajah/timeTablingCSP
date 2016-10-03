@@ -35,7 +35,4 @@ alur genetic algorithm
 2.b. jika sudah keturunan ke-5 dan belum ada gen yang punya fitness maksimum (masih ada konflik), maka kembalikan gen dengan fitness terbesar
 2.c. jika belum, maka gen dengan fitness terendah dibuang dan diganti dengan gen dengan fitness tertinggi
 2.d. lakukan kawin silang gen 1 dengan 2, gen 3 dengan 4, dengan panjang yang random
-
-catatan untuk GA:
-- tidak ada mutasi karena ribet
-- maka dari itu, dibatasi sampai generasi ke-5. karena jika > 5, semua gen menjadi monoton
+2.e. lakukan mutasi pada tiap gen, random matkul dimutasi domainnya dengan random domain
