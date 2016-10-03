@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  <title>Time-tabling</title>
+{% endblock %}
+
+{% block addCSS %}
+    <style>
+        .btn-file {
+                position: relative;
+                overflow: hidden;
+            }
+
+        .btn-file input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+    </style>
+{% endblock %}
+
+
+{% block body %}
+
+
+<div class="navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                  <img class="logo-1" src="images/logo.png" alt="LOGO">
+                <img class="logo-2" src="images/logo-2.png" alt="LOGO">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="collapse navbar-collapse" id="navbar">
+            <ul class="nav navbar-nav navbar-right" id="top-nav">
+                <li class="current"><a href="/">Home</a></li>
+                <li><a href="/index#about">About us</a></li>
+            </ul>
+        </nav><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</div>
+
+
+<section id="hero-area" class="section .minimize">
+  <div class="container">
+           <h1 class='text-center'>Create Timetable</h1>
+  </div>
+</section>
+
+<section id="main-content" class="section">
+ <div class="container">
+  <div class="col-md-8 col-md-offset-2">
+         <form class="form-horizontal" method="post" action="/timeTabling/result">
+
+            <fieldset>
+                <!-- Form Name -->
+                <legend class="legend-upload text-center">Upload file and setting</legend>
+
+                <div class="form-group">
+                    <label>File</label>
+
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                        <span class="btn btn-primary btn-file">
+                            Browse&hellip; <input type="file" id="fileupload" name="file">
+                        </span>
+                        </span>
+                        <div class="pull-right">
+                            <img  id="txtUpload" style="width: 140px; height: 140px;" class="img-thumbnail">
+                            <input type="hidden" name="filePath" id="filePath">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="progressbar"></div>
+
+                <div class="form-group">
+                    <input type="radio" name="algooptions" value="hillclimbing"> Hill Climbing <br>
+                    <input type="radio" name="algooptions"  value="simulatedannealing"> Simulated Annealing <br>
+                    <input type="radio" name="algooptions" id="geneticalgorithm" value="geneticalgorithm"> Genetic Algorithm <br>
+                </div>
+
+
+                <!-- Button -->
+                <div class="form-group">
+
+                    <p class="text-center">
+                        <input id="singlebutton" name="singlebutton" class="btn btn-primary" type="submit" value="Start!" />
+                    </p>
+                </div>
+            </fieldset>
+          </form>
+    </div>
+  </div>
+</section>
+
+
+{% endblock %}
+
+
+{% block extendSCRIPTS %}
+
+<script type="text/javascript" src="../static/js/jquery.fileupload.js"></script>
+<script src="../static/js/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="../static/js/jquery.fileupload-process.js"></script>
+
+<script type="text/javascript" src="../static/js/jquery.fileupload-ui.js"></script>
+<script>
+    $(function(){
+                $('#fileupload').fileupload({
+                    url: 'upload/',
+                    dataType: 'json',
+                    add: function (e, data) {
+                        data.submit();
+                    },
+                    success:function(response,status) {
+                    console.log(response.filename);
+                    var filePath = '/static/uploads/' + response.filename;
+                 $('#txtUpload').attr('src',filePath);
+                    $('#filePath').val(filePath);
+                        console.log('success');
+                    },
+                    error:function(error){
+                        console.log(error);
+                    }
+                });
+        })
+</script>
+
+{% endblock %}

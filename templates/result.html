@@ -1,0 +1,158 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  <title>Bebas</title>
+{% endblock %}
+
+{% block body %}
+
+        <!--
+        Header start
+        ==================== -->
+        <div class="navbar-default navbar-fixed-top" id="navigation">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">
+                        <img class="logo-1" src="images/logo.png" alt="LOGO">
+                        <img class="logo-2" src="images/logo-2.png" alt="LOGO">
+                    </a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <nav class="collapse navbar-collapse" id="navbar">
+                    <ul class="nav navbar-nav navbar-right" id="top-nav">
+                        <li class="current"><a href="#hero-area">Home</a></li>
+                        <li><a href="#about">About us</a></li>
+                    </ul>
+                </nav><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </div>
+
+        <section id="hero-area" class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="block">
+                            <h1 class="wow fadeInDown">Smart University Time-Tabling</h1>
+                            <p class="wow fadeInDown" data-wow-delay="0.3s">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna</p>
+                            <div class="wow fadeInDown" data-wow-delay="0.3s">
+                                <a class="btn btn-default btn-home" href="timeTabling" role="button">Get Started</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 wow zoomIn">
+                        <div class="block">
+                            <div class="counter text-center">
+                                <ul id="countdown_dashboard">
+                                    <li >
+                                        <div class="dash">
+                                        <span class="dash_title">Sunday</span>
+                                      </div>
+                                    </li>
+                                    <li>
+                                    <div class="dash">
+                                      <span class="dash_title">Monday</span>
+                                    </div>
+
+                                    </li>
+                                    <li>
+
+                                    </li>
+                                    <li>
+
+                                    </li>
+                                  <li>
+
+                                    </li>
+                                    <li>
+
+                                    </li>
+                                  <li>
+
+                                    </li>
+                                  <li>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- .row close -->
+            </div><!-- .container close -->
+        </section><!-- header close -->
+
+
+        <!--
+        About start
+        ==================== -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="heading wow fadeInUp">
+                        <h2>Our Team</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et <br> dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex</p>
+                    </div>
+                    <div class="col-sm-6 col-md-3 wow fadeInLeft">
+                        <div class="about">
+                            <div class="icon-box">
+                                <span class="icon">
+                                    <i class="ion-android-desktop"></i>
+                                </span>
+                            </div>
+                            <div class="caption">
+                                <h3>Febi Agil Ifdillah</h3>
+                                <p>13514010</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 wow fadeInLeft" data-wow-delay="0.3s">
+                        <div class="about">
+                            <div class="icon-box">
+                                <span class="icon">
+                                    <i class="ion-speedometer"></i>
+                                </span>
+                            </div>
+                            <div class="caption">
+                                <h3>Harry Alvin Waidan Kefas</h3>
+                                <p>13514036</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 wow fadeInLeft" data-wow-delay="0.6s">
+                        <div class="about">
+                            <div class="icon-box">
+                                <span class="icon">
+                                    <i class="ion-ios-infinite-outline"></i>
+                                </span>
+                            </div>
+                            <div class="caption">
+                                <h3>Anwar Ramadha</h3>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 wow fadeInLeft" data-wow-delay="0.9s">
+                        <div class="about">
+                            <div class="icon-box">
+                                <span class="icon">
+                                    <i class="ion-ios-cloud-outline"></i>
+                                </span>
+                            </div>
+                            <div class="caption">
+                                <h3>Naufal Malik Rabbani</h3>
+                                <p>13514052</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .container close -->
+        </section><!-- #about close -->
+
+{% endblock %}
