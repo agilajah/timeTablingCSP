@@ -216,11 +216,14 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
                     foundBetter = True
                     break #break for i
                 else: #sama aja atau bahkan lebih buruk, cek apakah bisa ditolerir untuk tetap diambil
-                    if tempMax > threshold:
-                        hasilRandom = random.randint(tempMin, tempMax);
-                        if hasilRandom >= threshold: #ambil walaupun lebih banyak konflik
+                    probability = exp(abs(nKonflikNow - nKonflikNew)*1000/tempMax)
+                    if probability > threshold: #random walk
+                        hasilRandom = random.randint(0,1);
+                        if hasilRandom == 1: #ambil walaupun lebih banyak konflik
                             foundBetter = True
                             break #break for i
+                        elif hasilRandom == 0: # tidak mengambil konfigurasi baru
+                            continue
             nKonflikNow = nKonflikNew
             if foundBetter == True:
                 break #break for matkul, gausah geser matkul lain juga
