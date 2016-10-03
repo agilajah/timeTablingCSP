@@ -193,16 +193,17 @@ def countConflict(hasil, ruang):	# hasil == config, complete assignment
 def findConflict(hasil, ruang):	# hasil == config, complete assignment
 													# return value : list of idx_jadwal
 	pass
-	confs[[], []] # idx == 0, jadwal bentrok | # idx == 1
+	confs = [[], []] # idx == 0, jadwal bentrok | # idx == 1
 	for hari in range(1,6):
 		days = []
 		for h in hasil: # menambahkan matkul yang diassign di hari tersebut
 			if hari == h[5]:
 				days.append(h)
 
-		room = []
-		for r in ruang:
-			if hari == r[5]:
+		# room = []
+		# for r in ruang:
+		# 	if hari == r[5]:
+		# 		pass
 		
 		# membandingkan kemungkinan semua konflik di satu hari
 		for i in range(0,len(days)-1):
@@ -216,12 +217,16 @@ def findConflict(hasil, ruang):	# hasil == config, complete assignment
 						temp = []
 						temp.append(days[i]) # menambahkan matakuliah yang konflik di append bersama jam awal dan jam akhir konflik
 						temp.append(days[j])
-						temp.append(list(check)[0])
-						temp.append(list(check)[1])
 						confs[0].append(temp)
-						# menambahkan ruangan apabila konflik
-						# temp = []
-						# temp.append(days[])
+						if days[i][6] == days[j][6]: # menambahkan konflik ruangan yang digunakan
+							temp = []
+							temp.append(days[i][6])
+							temp.append(days[i][7])
+							temp.append(days[i][8])
+							temp.append(days[i][9])
+							confs[1].append(temp)
+						else:
+							confs[1].append([])
 					else:
 						continue
 	return confs;
@@ -252,11 +257,14 @@ for x in dataJadwal:
 
 initConfig(dataJadwal, dataRuang, matkul)
 
+listConflict = findConflict(matkul, dataRuang):
+
+
 for x in matkul:
 	print x
-print "conflict = ", conflict(matkul)
+print conflict(matkul)
 
-# print unusedDays(matkul)
+
 
 # for r in j:
 # 	if r != 'dummy':
