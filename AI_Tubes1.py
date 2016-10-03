@@ -34,21 +34,21 @@ class Ruangan:
             for hari in jam:
                 del hari[:]
 
-    def countFilledSel(self):
+    def countFilledSel(self): #untuk hitung persen keefektifan
         hasil = 0
         for i in range(11): #cek tiap sel
             if i + 7 >= self.jamBuka and i + 7 <= self.jamTutup:
                 for j in self.hari:
-                    if len(self.sel[i][int(j) - 1]) > 0: #ada isinya, untuk persen keefektifan
+                    if len(self.sel[i][int(j) - 1]) > 0: #ada isinya
                         hasil += 1
         return hasil
 
-    def countFitness(self):
+    def countFitness(self): #untuk GA
         hasil = 0
         for i in range(11): #cek tiap sel
             if i + 7 >= self.jamBuka and i + 7 <= self.jamTutup:
                 for j in self.hari:
-                    if len(self.sel[i][int(j) - 1]) == 1: #tidak konflik, sebagai fitness function
+                    if len(self.sel[i][int(j) - 1]) == 1: #tidak konflik
                         hasil += 1
         return hasil
 
@@ -61,28 +61,27 @@ class Matkul:
         self.hari = hari #list hari apa aja Matkul tersedia
 
     def addListDomain(self, listDomain):
-        self.__listDomain = listDomain
-        self.nDomain = len(self.__listDomain) #banyaknya domain
+        self.listDomain = listDomain
+        self.nDomain = len(self.listDomain) #banyaknya domain
 
     def setIdxDomain(self, idxDomain): #pilih satu domain dari listDomain berdasarkan indexnya
-        self.__idxDomain = idxDomain
-        self.__addToSlot()
+        self.idxDomain = idxDomain
+        self.addToSlot()
 
-    def getDomain(self): #yang boleh mengakses listDomain dan idxDomain hanya class Matkul
-        return self.__listDomain[self.__idxDomain]
+    def getDomain(self):
+        return self.listDomain[self.idxDomain]
 
     def idxPlus(self): #ganti domain dengan menambah 1 index di listDomain nya
-        self.__deleteFromSlot()
-        self.__idxDomain += 1
-        self.__idxDomain %= self.nDomain #supaya tidak out of bond
-        self.__addToSlot()
+        self.deleteFromSlot()
+        self.idxDomain += 1
+        self.idxDomain %= self.nDomain #supaya tidak out of bond
+        self.addToSlot()
 
-    def __addToSlot(self): #yang boleh menambah ke slot time hanya class Matkul
+    def addToSlot(self):
         domain = self.getDomain()
         domain.ptrRuangan.slotPlus(self, domain.hari, domain.jamMulai, domain.jamSelesai)
-<<<<<<< HEAD
 
-    def __deleteFromSlot(self): #yang boleh menghapus dari slot time hanya class Matkul
+    def deleteFromSlot(self):
         domain = self.getDomain()
         domain.ptrRuangan.slotMinus(self, domain.hari, domain.jamMulai, domain.jamSelesai)
 
@@ -100,30 +99,7 @@ class Matkul:
         else: #idxHari == 5
             stringHari = "Jumat"
         print self.nama, "\t", domain.ptrRuangan.nama, "\t", stringHari, "\t", domain.jamMulai, "-", domain.jamSelesai
-=======
->>>>>>> 57a7ac5650d0067c3198af6d9cfd7f8fc2689330
 
-    def __deleteFromSlot(self): #yang boleh menghapus dari slot time hanya class Matkul
-        domain = self.getDomain()
-        domain.ptrRuangan.slotMinus(self, domain.hari, domain.jamMulai, domain.jamSelesai)
-
-    def printConsole(self): #print data-data ke console, gaperlu dimengerti ini hiasan doang
-        domain = self.getDomain()
-        idxHari = domain.hari
-        if idxHari == 1:
-            stringHari = "Senin"
-        elif idxHari == 2:
-            stringHari = "Selasa"
-        elif idxHari == 3:
-            stringHari = "Rabu "
-        elif idxHari == 4:
-            stringHari = "Kamis"
-        else: #idxHari == 5
-            stringHari = "Jumat"
-        if len(domain.ptrRuangan.nama) <= 4:
-            print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
-        else:
-            print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
 class Domain:
     #hanya butuh pointer ke Ruangan, karena objek dia sendiri sudah dipegang oleh class Matkul di dalam listDomain
     def __init__(self, ptrRuangan, hari, jamMulai, jamSelesai):
@@ -258,7 +234,7 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
         for matkul in listKonflik:
             print " ", matkul.nama
 
-def geneticAlgorithm():
+def geneticAlgorithm(generasi):
     #fitness function max kalau semua matkul domainnya alldiff
     fitnessMax = 0
     for matkul in listMatkul:
@@ -285,8 +261,8 @@ def geneticAlgorithm():
         idxMin = fitness.index(min(fitness))
         idxMax = fitness.index(max(fitness))
         keturunan += 1
-        #generasi lebih dari 5 menyebabkan kembar semua (tidak dapat hasil signifikan)
-        if keturunan == 5:
+        #gak nemu solusi sampai keturunan ke-generasi
+        if keturunan == generasi:
             #pasangkan lagi matkul dengan domain kepunyaan gen terbaik (fitness terbesar)
             restart()
             for i in range(len(listGen[idxMax])):
@@ -295,12 +271,12 @@ def geneticAlgorithm():
             print countConflicts(), "KONFLIK DALAM GENERASI", keturunan
             for matkul in listKonflik:
                 print " ", matkul.nama
-            return
+            break #break while infinite
         else:
             #gen jelek timpa dengan gen bagus
             for i in range(len(listMatkul)):
                 listGen[idxMin][i] = listGen[idxMax][i]
-            #kawin silang TANPA mutasi, mulai dari idxBelah sampai index terakhir
+            #kawin silang TANPA mutasi, mulai dari idxBelah (random) sampai index terakhir
             idxBelah = random.randint(1, len(listMatkul) - 2)
             for i in range(idxBelah, len(listMatkul)):
                 #swap idx 0 dan 1
@@ -311,6 +287,47 @@ def geneticAlgorithm():
                 temp = listGen[2][i]
                 listGen[2][i] = listGen[3][i]
                 listGen[3][i] = temp
+            #mutasi = matkul ke-matkulMutasi di gen, domainnya berubah menjadi domainMutasi
+            for gen in listGen:
+                matkulMutasi = random.randint(0, len(listMatkul) - 1)
+                domainMutasi = random.randint(0, listMatkul[matkulMutasi].nDomain - 1)
+                gen[matkulMutasi] = domainMutasi
+
+def pindahJadwal(namaMatkul, namaRuangan, hariBaru, jamBaru):
+    #cari matkul berdasarkan nama
+    matkulPindah = None
+    for matkul in listMatkul:
+        if matkul.nama == namaMatkul:
+            matkulPindah = matkul
+            break
+    if matkulPindah is None:
+        print "Jadwal tidak ditemukan"
+    else: #ketemu
+        idxDomainLama = matkulPindah.idxDomain
+        idxDomainBaru = idxDomainLama
+        #cari idxDomainBaru
+        listDomain = matkulPindah.listDomain
+        for idx in range(len(listDomain)):
+            domain = listDomain[idx]
+            if domain.ptrRuangan.nama == namaRuangan and domain.hari == hariBaru and domain.jamMulai == jamBaru:
+                idxDomainBaru = idx #ketemu
+                break
+        #domain gak ketemu atau dipindahin ke domain yg sama -_-
+        if idxDomainBaru == idxDomainLama:
+            print "Jadwal tetap"
+        else:
+            #pindahin
+            matkulPindah.deleteFromSlot()
+            matkulPindah.setIdxDomain(idxDomainBaru)
+            #hitung conflik baru
+            nKonflik = countConflicts()
+            if nKonflik == 0:
+                print "SOLUSI DITEMUKAN SETELAH EDIT"
+            else:
+                print nKonflik, "KONFLIK SETELAH EDIT:"
+                for matkul in listKonflik:
+                    print " ", matkul.nama
+            printHasil()
 
 def restart(): #hapus data agar bisa dipakai ulang
     del listKonflik[:]
@@ -318,13 +335,7 @@ def restart(): #hapus data agar bisa dipakai ulang
         ruang.deleteAllSel()
 
 def printHasil(): #gaperlu dimengerti, hiasan print doang
-<<<<<<< HEAD
     print "MATKUL\tRUANG\tHARI\tPUKUL"
-=======
-    print "========================================================================="
-    print "| MATKUL\t| RUANG\t\t| HARI\t\t\t| PUKUL\t\t|"
-    print "========================================================================="
->>>>>>> 57a7ac5650d0067c3198af6d9cfd7f8fc2689330
     for matkul in listMatkul:
         matkul.printConsole()
     totalSel = 0
@@ -355,7 +366,7 @@ def execGA():
         #initializeRandom() tanpa heuristik
         for matkul in listMatkul:
             gen.append(random.randint(0, matkul.nDomain - 1)); #masukkan ke gen idxDomain nya saja
-    geneticAlgorithm()
+    geneticAlgorithm(20)
     printHasil()
 
 #PROGRAM UTAMA
@@ -367,3 +378,7 @@ bacaTestcase("Testcase.txt")
 execHC()
 execSA()
 execGA()
+#parameter pindah jadwal = nama matkul yang ingin dipindah, nama ruangan tujuan, hari tujuan (senin = 1), jam mulai tujuan
+#contoh dibawah = Matkul IF3111 dipindah ke Ruangan 7610 hari Rabu dimulai dari jam 9
+pindahJadwal("IF3111", "7610", 3, 9)
+#berhubung algo terakhir yang digunakan adalah GA, maka yang dipindah jadwalnya adalah jadwal hasil si GA
