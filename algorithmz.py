@@ -1,4 +1,5 @@
 from __future__ import division
+from flask import json, jsonify
 import random
 
 #PROGRAM UTAMA
@@ -6,6 +7,7 @@ listRuangan = []
 listMatkul = []
 listKonflik = []
 listGen = [[], [], [], []] #list of list of idxDomain for GA only
+listSolusi = []
 
 """
 variable : jadwal matkul
@@ -91,6 +93,12 @@ class Matkul:
         domain = self.getDomain()
         domain.ptrRuangan.slotMinus(self, domain.hari, domain.jamMulai, domain.jamSelesai)
 
+    def __iter__(self):
+        yield 'nama', self.nama
+        yield 'jamBuka', self.getDomain().jamMulai
+        yield 'jamTutup', self.getDomain().jamSelesai
+        yield 'hari', self.getDomain().hari
+
     def printConsole(self): #print data-data ke console, gaperlu dimengerti ini hiasan doang
         domain = self.getDomain()
         idxHari = domain.hari
@@ -108,6 +116,7 @@ class Matkul:
             print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
         else:
             print "|", self.nama, "\t|", domain.ptrRuangan.nama, "\t|", stringHari, "\t\t|", domain.jamMulai, "-", domain.jamSelesai, "\t|"
+
 class Domain:
     #hanya butuh pointer ke Ruangan, karena objek dia sendiri sudah dipegang oleh class Matkul di dalam listDomain
     def __init__(self, ptrRuangan, hari, jamMulai, jamSelesai):
@@ -313,6 +322,31 @@ def printHasil(): #gaperlu dimengerti, hiasan print doang
         totalSel += ruang.selAvailable
         selTerisi += ruang.countFilledSel()
     print "Persentasi keefektifan =", "%.2f" % (selTerisi / totalSel * 100), "persen.\n"
+
+def calculateEffectiveness():
+    totalSel = 0
+    selTerisi = 0
+    for ruang in listRuangan:
+        totalSel += ruang.selAvailable
+        selTerisi += ruang.countFilledSel()
+
+    hasil = selTerisi/totalSel * 100
+
+    return hasil
+
+def convert_to_json():
+    temp = [] # container of list of dicitonary
+    count = 0 #for id
+    for matkul in listMatkul:
+        tempDict = dict(matkul) #convert matkul to dictionary
+        tempDict.update({'ruang': matkul.getDomain().ptrRuangan.nama}) #add classrom to dictionary
+        tempDict.update({'id': count})
+        temp.append(tempDict)
+        count=count+1
+
+    #convert dictionary to json
+    return json.dumps(temp, ensure_ascii=True)
+
 
 def execHC():
     restart()

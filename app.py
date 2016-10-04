@@ -56,6 +56,7 @@ def findSchedule():
     errors = ''
     check = request.form.get('file')
     try:
+            test = "ha"
             if request.form.get('file') is None:
                 _filePath = ''
                 return render_template('timeTabling.html')
@@ -64,12 +65,20 @@ def findSchedule():
                 algorithmz.bacaTestcase(_filePath)
                 if (request.form.get('algooptions') == "simulatedannealing"):
                     algorithmz.execSA()
+                    test = "SA"
                 if (request.form.get('algooptions') == "hillclimbing"):
                     algorithmz.execHC()
+                    test = "HC"
                 if (request.form.get('algooptions') == "geneticalgorithm"):
                     algorithmz.execSA()
+                    test = "GA"
 
-                return render_template('result.html', listRuangan=algorithmz.listRuangan, listMatkul=algorithmz.listMatkul, listKonflik=algorithmz.listKonflik)
+
+                result_in_json = algorithmz.convert_to_json()
+                effectiveness = algorithmz.calculateEffectiveness()
+                conflict = algorithmz.countConflicts()
+
+                return render_template('result.html', data=result_in_json, effectiveness=effectiveness, conflict=conflict, test=test)
     except Exception as e:
         return render_template('404.html',error = str(e), check=check)
 

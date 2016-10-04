@@ -11,6 +11,7 @@
 
         <!-- Fonts -->
         <!-- Lato -->
+        {% block extendSCRIPTS %}{% endblock %}
         <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
@@ -53,9 +54,13 @@
 
         <!-- Js -->
         <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script src="../static/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script src="../static/js/vendor/jquery-1.10.2.min.js"></script>
+        <script
+              src="http://code.jquery.com/jquery-3.1.1.js"
+              integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+              crossorigin="anonymous"></script>
+
+        <!-- <script src="../static/js/vendor/jquery-1.10.2.min.js"></script> -->
         <script src="../static/js/jquery.lwtCountdown-1.0.js"></script>
         <script src="../static/js/owl.carousel.min.js"></script>
         <script src="../static/js/jquery.validate.min.js"></script>
@@ -63,11 +68,11 @@
         <script src="../static/js/jquery.nav.js"></script>
         <script src="../static/js/jquery.sticky.js"></script>
         <script src="../static/js/plugins.js"></script>
-        <script src="../static/js/bootstrap.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
         <script src="../static/js/wow.min.js"></script>
         <script src="../static/js/main.js"></script>
 
-        {% block extendSCRIPTS %}{% endblock %}
 
     </body>
 </html>
