@@ -95,6 +95,7 @@ class Matkul:
 
     def __iter__(self):
         yield 'nama', self.nama
+        yield 'sks', self.sks
         yield 'jamBuka', self.getDomain().jamMulai
         yield 'jamTutup', self.getDomain().jamSelesai
         yield 'hari', self.getDomain().hari

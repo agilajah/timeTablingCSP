@@ -2,6 +2,13 @@ $(window).load(function() {
     $("#preloader").fadeOut("slow");
 });
 
+
+// '.tbl-content' consumed little space for vertical scrollbar, scrollbar width depend on browser/os/platfrom. Here calculate the scollbar width .
+$(window).on("load resize ", function() {
+  var scrollWidth = $('.table-content').width() - $('.table-content table').width();
+  $('.table-header').css({'padding-right':scrollWidth});
+}).resize();
+
 $(document).ready(function(){
 
     wow = new WOW({

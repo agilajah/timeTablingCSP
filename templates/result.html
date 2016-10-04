@@ -4,6 +4,13 @@
   <title>Time-tabling: Result</title>
 {% endblock %}
 
+
+{% block extendSCRIPTS%}
+
+
+{% endblock %}
+
+
 {% block body %}
 
 
@@ -43,213 +50,168 @@
 <section id="main-content" class="section">
  <div class="container">
 
-    <div>{{ data }}</div>
+<script>
+$(document).ready(function() {
+    var data = {{ data | tojson | safe }}
+    $.each($.parseJSON(data), function(idx, obj) {
+        var find_id = obj.hari * 10 + obj.jamBuka; //find corresponding id
+        var sks = obj.sks;
+        var matkul='<div class ="card card--small matkul-' + find_id +'">'; //e.g class matkul-57
+            matkul+='<div style="background-image: url(https://placeimg.com/640/480/nature)" class="card__image"></div>';
+            matkul+='<h2 class="card__title">' + obj.nama + '</h2>';
+            matkul+='<span class="class__subtitle">' + obj.ruang + '</span';
+            matkul+='<p class="card__text"></p>';
+            matkul+='</div>';
+
+        for (var i=0; i<sks; i++) {
+            var aidi = i + find_id;
+            $('#'+aidi).append(matkul);
+        }
+    });
+});
+</script>
 
     <h1 class='text-center'>{{test}}</h1>
-    <table width="80%" align="center" >
-        <tr>
-            <th>Time</th>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thrusday</th>
-            <th>Friday</th>
-        </tr>
+    <div class="table-header text-center">
+      <thead>
+        <table align="center" class="text-center tb-header" >
+            <tr>
+                <th>Time</th>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thrusday</th>
+                <th>Friday</th>
+            </tr>
+        </table>
+       </thead>
+    </div>
 
 
-    <tr>
-        <th>7:00 - 8:00</th>
-            <td id="17">Physics-1</td>
-            <td id="27">English</td>
-            <td id="37"></td>
-            <td id="47">Chemestry-1</td>
-            <td id="57">Alzebra</td>
-    </tr>
+    <div class="table-content text-center">
+        <tbody>
+            <table>
+                    <tr>
+                        <th>7:00 - 8:00</th>
+                            <td id="17"></td>
+                            <td id="27"></td>
+                            <td id="37"></td>
+                            <td id="47"></td>
+                            <td id="57"></td>
+                    </tr>
 
-    <tr>
-        <th>8:00 - 9:00</th>
-            <td id="18">Alzebra</td>
-            <td id="28">Physics-1</td>
-            <td id="38">English</td>
-            <td id="48"></td>
-            <td id="58">Chemestry-1</td>
-    </tr>
+                    <tr>
+                        <th>8:00 - 9:00</th>
+                            <td id="18"></td>
+                            <td id="28"></td>
+                            <td id="38"></td>
+                            <td id="48"></td>
+                            <td id="58"></td>
+                    </tr>
 
-    <tr>
-        <th>9:00 - 10:00</th>
+                    <tr>
+                        <th>9:00 - 10:00</th>
 
-            <td id="19">Physics-1</td>
-            <td id="29">English</td>
-            <td id="39"></td>
-            <td id="49">Chemestry-1</td>
-            <td id="59">Alzebra</td>
+                            <td id="19"></td>
+                            <td id="29"></td>
+                            <td id="39"></td>
+                            <td id="49"></td>
+                            <td id="59"></td>
 
-    </tr>
+                    </tr>
 
-    <tr>
-        <th>10:00 - 11:00</th>
+                    <tr>
+                        <th>10:00 - 11:00</th>
 
-            <td id="20">Physics-1</td>
-            <td id="30">English</td>
-            <td id="40"></td>
-            <td id="50">Chemestry-1</td>
-            <td id="60">Alzebra</td>
+                            <td id="20"></td>
+                            <td id="30"></td>
+                            <td id="40"></td>
+                            <td id="50"></td>
+                            <td id="60"></td>
 
-    </tr>
+                    </tr>
 
-    <tr>
-        <th>11:00 - 12:00</th>
+                    <tr>
+                        <th>11:00 - 12:00</th>
 
-        <td id="21">Physics-1</td>
-        <td id="31">English</td>
-        <td id="41"></td>
-        <td id="51">Chemestry-1</td>
-        <td id="61">Alzebra</td>
-    </tr>
+                        <td id="21"></td>
+                        <td id="31"></td>
+                        <td id="41"></td>
+                        <td id="51"></td>
+                        <td id="61"></td>
+                    </tr>
 
-    <tr>
-        <th>12:00 - 01:00</th>
+                    <tr>
+                        <th>12:00 - 01:00</th>
 
-            <td id="22">Physics-1</td>
-            <td id="32">English</td>
-            <td id="42"></td>
-            <td id="52">Chemestry-1</td>
-            <td id="62">Alzebra</td>
+                            <td id="22"></td>
+                            <td id="32"></td>
+                            <td id="42"></td>
+                            <td id="52"></td>
+                            <td id="62"></td>
 
-    </tr>
+                    </tr>
 
-    <tr>
-        <th>01:00 - 02:00</th>
+                    <tr>
+                        <th>01:00 - 02:00</th>
 
-            <td id="23">Physics-1</td>
-            <td id="33">English</td>
-            <td id="43"></td>
-            <td id="53">Chemestry-1</td>
-            <td id="63">Alzebra</td>
+                            <td id="23"></td>
+                            <td id="33"></td>
+                            <td id="43"></td>
+                            <td id="53"></td>
+                            <td id="63"></td>
 
-    </tr>
+                    </tr>
 
-    <tr>
-        <th>02:00 - 03:00</th>
+                    <tr>
+                        <th>02:00 - 03:00</th>
 
-            <td id="24">Physics-1</td>
-            <td id="34">English</td>
-            <td id="44"></td>
-            <td id="54">Chemestry-1</td>
-            <td id="64">Alzebra</td>
+                            <td id="24"></td>
+                            <td id="34"></td>
+                            <td id="44"></td>
+                            <td id="54"></td>
+                            <td id="64"></td>
 
-    </tr>
+                    </tr>
 
-    <tr>
-        <th>3:00 - 4:00</th>
+                    <tr>
+                        <th>3:00 - 4:00</th>
 
-            <td id="25">Physics-1</td>
-            <td id="35">English</td>
-            <td id="45"></td>
-            <td id="55">Chemestry-1</td>
-            <td id="65">Alzebra</td>
+                            <td id="25"></td>
+                            <td id="35"></td>
+                            <td id="45"></td>
+                            <td id="55"></td>
+                            <td id="65"></td>
 
-    </tr>
+                    </tr>
 
-    <tr>
-        <th>4:00 - 5:00</th>
+                    <tr>
+                        <th>4:00 - 5:00</th>
 
-            <td id="26">Physics-1</td>
-            <td id="36">English</td>
-            <td id="46"></td>
-            <td id="56">Chemestry-1</td>
-            <td id="66">Alzebra</td>
+                            <td id="26"></td>
+                            <td id="36"></td>
+                            <td id="46"></td>
+                            <td id="56"></td>
+                            <td id="66"></td>
 
-    </tr>
+                    </tr>
 
-    <tr>
-        <th>5:00 - 6:00</th>
+                    <tr>
+                        <th>5:00 - 6:00</th>
 
-            <td id="27">Physics-1</td>
-            <td id="37">English</td>
-            <td id="47"></td>
-            <td id="57">Chemestry-1</td>
-            <td id="67">Alzebra</td>
+                            <td id="27"></td>
+                            <td id="37"></td>
+                            <td id="47"></td>
+                            <td id="57"></td>
+                            <td id="67"></td>
 
-    </tr>
-</table>
+                    </tr>
+            </table>
+        </tbody>
+    </div>
 
   </div>
 </section>
 
 
-{% endblock %}
-{% block extendSCRIPTS%}
-
-<script>
-$(document).ready(function() {
-    $.each(json, function(idx, obj) {
-        alert(obj.tagName);
-    });
-
-
-          function decodeJSON(encodedJSON) {
-              var decodedJSON = $('<div/>').html(encodedJSON).text();
-              return $.parseJSON(decodedJSON);
-             }
-        var a = {{ data|tojson|safe }};
-        var b = decodeJSON(a[1]).id;
-        console.log(b);
-        for (i=0; i < a.length; i++) {
-            count = decodeJSON(a[i]).hari * 10 + decodeJSON(a[i]).jamBuka;
-                for (id=17; id <=67; id=id+10) {
-                  if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                  }
-                }
-                for (id=18; id <=58; id=id+10) {
-                   if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                   }
-                }
-                for (id=19; id <=59; id=id+10) {
-                   if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                  }
-                }
-                for (id=20; id <=60; id=id+10) {
-                  if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                  }
-                }
-                for (id=21; id <=61; id=id+10) {
-                  if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                  }
-                }
-                for (id=22; id <=62; id=id+10) {
-                  if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                  }
-                }
-                for (id=23; id <=63; id=id+10) {
-                  if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                   }
-                }
-                for (id=24; id <=64; id=id+10) {
-                  if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                  }
-                }
-                for (id=25; id <=65; id=id+10) {
-                  if (count == id) {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                  }
-                }
-                for (id=26; id <=66; id=id+10) {
-                   if (count == id)  {
-                    $('#'+id).html("<div>decodeJSON(a[i]).nama</div><div>decodeJSON(a[i]).ruang</div>");
-                    }
-                }
-
-
-        }
-      });
-</script>
 {% endblock %}

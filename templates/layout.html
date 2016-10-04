@@ -11,12 +11,19 @@
 
         <!-- Fonts -->
         <!-- Lato -->
-        {% block extendSCRIPTS %}{% endblock %}
+         {% block extendSCRIPTS %}{% endblock %}
         <link href='http://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
+        <link rel="stylesheet/less" type="text/css" href="../static/css/styles.less" />
+         <!--      <script
+              src="http://code.jquery.com/jquery-3.1.1.js"
+              integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+              crossorigin="anonymous"></script> -->
         <!-- CSS -->
-
+        <!-- Latest compiled and minified CSS -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.css') }}">
@@ -55,16 +62,10 @@
         <!-- Js -->
         <!-- Latest compiled and minified JavaScript -->
         <script src="../static/js/vendor/modernizr-2.6.2.min.js"></script>
-        <script
-              src="http://code.jquery.com/jquery-3.1.1.js"
-              integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-              crossorigin="anonymous"></script>
-
-        <!-- <script src="../static/js/vendor/jquery-1.10.2.min.js"></script> -->
         <script src="../static/js/jquery.lwtCountdown-1.0.js"></script>
         <script src="../static/js/owl.carousel.min.js"></script>
-        <script src="../static/js/jquery.validate.min.js"></script>
-        <script src="../static/js/jquery.form.js"></script>
+       <!-- <script src="../static/js/jquery.validate.min.js"></script>
+        <script src="../static/js/jquery.form.js"></script> -->
         <script src="../static/js/jquery.nav.js"></script>
         <script src="../static/js/jquery.sticky.js"></script>
         <script src="../static/js/plugins.js"></script>

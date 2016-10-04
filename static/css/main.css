@@ -337,7 +337,9 @@ a:active {
 
 #hero-area {
   padding:180px 0;
-    background: rgba(0, 0, 0, 0) linear-gradient(135deg, #8ec64e 0%, #41aba0 100%) repeat scroll 0 0;
+    /*background: rgba(0, 0, 0, 0) linear-gradient(135deg, #8ec64e 0%, #41aba0 100%) repeat scroll 0 0;*/
+    background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+    background: linear-gradient(to right, #25c481, #25b7c4);
 }
 #hero-area:before {
     content: "";
@@ -700,139 +702,10 @@ background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#8ec6
  main-content {
     text-align: center;
     background: #f9f9f9;
+    margin:50px;
+    padding: 25px;
 }
 
- main-content {
-    text-align: left;
-}
- main-content .caption {
-    text-align: center;
-}
- main-content .caption h3 {
-    margin: 0 0 10px;
-    color: #333333;
-    font-weight: bold;
-    font-size: 15px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-    font-weight: normal;
-    text-transform: uppercase;
-}
-
- main-content .icon-box {
-    display: inline-block;
-    margin-bottom: 15px;
-    overflow-y: hidden;
-    position: relative;
-    width: 100%;
-}
- main-content .icon-box:before {
-    display: block;
-    content: '';
-    position: relative;
-    top: 75px;
-    width: 100px;
-    height: 1px;
-    display: block;
-    margin: 0 auto;
-    background-color: #cbcbcd;
-    -webkit-transition: all 0.2s ease-in;
-    -moz-transition: all 0.2s ease-in;
-    -o-transition: all 0.2s ease-in;
-    -ms-transition: all 0.2s ease-in;
-    -khtml-transition: all 0.2s ease-in;
-    transition: all 0.2s ease-in;
-}
- main-content .icon-box .icon {
-    background-color: #26282b;
-    border-radius: 5px;
-    display: inline-block;
-    height: 75px;
-    left: 36%;
-    position: relative;
-    top: 12px;
-    width: 75px;
-    -webkit-transform: rotate(50deg);
-       -moz-transform: rotate(50deg);
-        -ms-transform: rotate(50deg);
-         -o-transform: rotate(50deg);
-            transform: rotate(50deg);
-background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#8ec64e), color-stop(100%,#41aba0));
-  background: -webkit-linear-gradient(-45deg, #8ec64e 0%,#41aba0 100%);
-  background: -o-linear-gradient(-45deg, #8ec64e 0%,#41aba0 100%);
-  background: -ms-linear-gradient(-45deg, #8ec64e 0%,#41aba0 100%);
-  background: linear-gradient(135deg, #8ec64e 0%,#41aba0 100%);
-  -webkit-transition: all 0.2s ease-in;
-  -moz-transition: all 0.2s ease-in;
-  -o-transition: all 0.2s ease-in;
-  -ms-transition: all 0.2s ease-in;
-  -khtml-transition: all 0.2s ease-in;
-  transition: all 0.2s ease-in;
-}
-
- main-content:hover .icon-box .icon {
-    background-color: #41aba0;
-}
-
- main-content .icon-box .icon i {
-    color: #fff;
-    font-size: 30px;
-    height: 75px;
-    line-height: 70px;
-    text-align: center;
-    width: 75px;
-    display: inline-block;
-    -webkit-transform: rotate(-50deg);
-       -moz-transform: rotate(-50deg);
-        -ms-transform: rotate(-50deg);
-         -o-transform: rotate(-50deg);
-            transform: rotate(-50deg);
-}
-
- main-content .thumbnail {
-    border: 2px solid #DEDEDE;
-    border-radius: 0px;
-    padding: 40px 0;
-    -webkit-transition: all 0.3s ease-in-out 0s;
-    -moz-transition: all 0.3s ease-in-out 0s;
-    -o-transition: all 0.3s ease-in-out 0s;
-    transition: all 0.3s ease-in-out 0s;
-}
- main-content .thumbnail:hover {
-    background-color: #41aba0;
-    border: 2px solid #41aba0;
-    opacity: 1;
-}
-.thumbnail .icon {
-    font-size: 50px;
-}
- main-content .thumbnail:hover .icon,
- main-content .thumbnail:hover .caption h3,
- main-content .thumbnail:hover .caption p {
-    color: #fff;
-    -webkit-transition: all 0.5s ease-in-out 0s;
-    -moz-transition: all 0.5s ease-in-out 0s;
-    -o-transition: all 0.5s ease-in-out 0s;
-    transition: all 0.5s ease-in-out 0s;
-}
- main-content .thumbnail img {
-    padding-bottom: 30px;
-}
- main-content .thumbnail .img-adjust {
-    margin-top: 10px;
-    position: relative;
-}
- main-content .thumbnail .caption h3 {
-    color: #333333;
-    font-weight: 300;
-    font-size: 25px;
-    padding-bottom: 22px;
-}
- main-content .caption p {
-    line-height: 1.5;
-    font-size: 15px;
-    color: #7e7e7e;
-}
 
 
 
@@ -885,4 +758,229 @@ footer p a:hover {
 
 .legend-upload {
   padding: 5px;
+}
+
+
+table{
+    /*display:table;*/
+    width:100%;
+    height: 100%;
+    table-layout:fixed;
+}
+
+
+
+/* forked from http://codepen.io/nikhil8krishnan" */
+h1{
+  font-size: 30px;
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 15px;
+}
+table{
+  width:100%;
+  table-layout: fixed;
+}
+.table-header{
+  background-color: rgba(255,255,255,0.3);
+ }
+.table-content{
+  height:300px;
+  overflow-x:auto;
+  margin-top: px;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+th{
+  padding: 25px 20px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  color: #fff;
+  text-transform: uppercase;
+}
+td{
+  padding: 15px;
+  text-align: left;
+  vertical-align:middle;
+  font-weight: 300;
+  font-size: 12px;
+  color: #fff;
+  border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+
+/* demo styles */
+
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+table {
+  background: -webkit-linear-gradient(left, #25c481, #25b7c4);
+  background: linear-gradient(to right, #25c481, #25b7c4);
+  font-family: 'Roboto', sans-serif;
+}
+
+/* for custom scrollbar for webkit browser*/
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+
+
+
+/* CARDDDDDDDDDDDDDDDDDDDDDDDDD */
+/* forked from : http://materialdesignblog.com/10-material-design-cards-for-web-in-css-html/ */
+button {
+  border: none;
+  background: transparent;
+}
+
+.card {
+  will-change: transform;
+  margin: 8px;
+  position: relative;
+  border-radius: 1.5px;
+  overflow: hidden;
+  background-color: #fafafa;
+  height: 40%;
+  width: 160px;
+  -webkit-transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 400ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+}
+.card:hover {
+  cursor: pointer;
+}
+.card__image {
+  position: absolute;
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repat;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: block;
+  opacity: 0;
+  -webkit-transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.card__image:after {
+  content: "";
+  display: block;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.1);
+  top: 0;
+  left: 0;
+  right: 0;
+  -webkit-transition: all 500ms;
+  transition: all 500ms;
+  bottom: 0;
+}
+.card__title {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  font-size: 18px;
+  color: #FFF;
+  margin: 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 0 16px;
+  font-weight: 400;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.card__subtitle {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  font-size: 12px;
+  color: black;
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #000;
+  left: 20px;
+  right: 0;
+  top: 10px;
+  position: absolute;
+  padding: 3 16px;
+  opacity: 0;
+  -webkit-transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.card__text {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  font-size: 14px;
+  display: block;
+  left: 0;
+  right: 0;
+  top: 50px;
+  padding: 10px;
+  margin: 0;
+  line-height: 1.6;
+  position: absolute;
+  color: #000;
+  overflow: hidden;
+  -webkit-transition: width 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: width 200ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  -webkit-transition: delay 0.1s;
+  transition: delay 0.1s;
+}
+
+.card__button {
+  outline: none;
+  position: relative;
+  display: inline-block;
+  line-height: 20px;
+  padding: 0 16px;
+  color: #ff1744;
+}
+
+.card--small {
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3), 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+  height: 50px;
+  min-height: 50px;
+}
+.card--small .card__image {
+  border-radius: 1px 0 0 1px;
+  left: 0;
+  top: 0;
+  width: 45px;
+  opacity: 1;
+  max-height: 50px;
+}
+.card--small .card__image:after {
+  opacity: 0;
+}
+.card--small .card__title {
+  color: #000;
+  left: 12px;
+  top: 12px;
+}
+.card--small .card__subtitle {
+  opacity: 1;
+  left: 12px;
+}
+.card--small .card__text {
+  top: 10px;
+  opacity: 0;
+}
+.card--small .card__action-bar {
+  left: 12px;
 }
