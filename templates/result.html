@@ -33,7 +33,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <nav class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav navbar-right" id="top-nav">
-                <li class="current"><a href="/">Home</a></li>
+                <li class="current"><a href="/index">Home</a></li>
                 <li><a href="/index#about">About us</a></li>
             </ul>
         </nav><!-- /.navbar-collapse -->
@@ -59,7 +59,7 @@ $(document).ready(function() {
         var matkul='<div class ="card card--small matkul-' + find_id +'">'; //e.g class matkul-57
             matkul+='<div style="background-image: url(https://placeimg.com/640/480/nature)" class="card__image"></div>';
             matkul+='<h2 class="card__title">' + obj.nama + '</h2>';
-            matkul+='<span class="class__subtitle">' + obj.ruang + '</span';
+            matkul+='<span class="card__subtitle">' + obj.ruang + '</span>';
             matkul+='<p class="card__text"></p>';
             matkul+='</div>';
 
@@ -80,7 +80,7 @@ $(document).ready(function() {
                 <th>Monday</th>
                 <th>Tuesday</th>
                 <th>Wednesday</th>
-                <th>Thrusday</th>
+                <th>Thursday</th>
                 <th>Friday</th>
             </tr>
         </table>
@@ -208,6 +208,20 @@ $(document).ready(function() {
                     </tr>
             </table>
         </tbody>
+    </div>
+
+    <div class="result-state">
+        <p>Algorithm Used: {{used}}</p>
+        <p>Conflict Counted : {{conflict}}</p>
+        <div class="list-class-conflict">
+            <p>Class conflict : </p>
+            <ul>
+                {% for class in listKonflik %}
+                <li>{{ class.nama }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <p>Effectiveness : {{ effectiveness  }}</p>
     </div>
 
   </div>

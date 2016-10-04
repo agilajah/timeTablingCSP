@@ -912,9 +912,9 @@ button {
   text-overflow: ellipsis;
   overflow: hidden;
   color: #000;
-  left: 20px;
   right: 0;
-  top: 10px;
+  left:0;
+  top: 5px;
   position: absolute;
   padding: 3 16px;
   opacity: 0;
@@ -970,17 +970,16 @@ button {
 }
 .card--small .card__title {
   color: #000;
-  left: 12px;
+  left: 30px;
   top: 12px;
 }
 .card--small .card__subtitle {
   opacity: 1;
-  left: 12px;
+  left: 40px;
+  right:0px;
+  color: #000;
 }
 .card--small .card__text {
   top: 10px;
   opacity: 0;
-}
-.card--small .card__action-bar {
-  left: 12px;
 }

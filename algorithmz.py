@@ -1,5 +1,6 @@
 from __future__ import division
 from flask import json, jsonify
+from math import exp
 import random
 
 #PROGRAM UTAMA
@@ -207,7 +208,7 @@ def countConflicts():
     listKonflik.sort(key=lambda matkul: matkul.nDomain, reverse=True)
     return hasil
 
-def hillOrStimulated(tempMax, tempMin, threshold, decrease):
+def hillOrStimulated(temp, decrease):
     lokalMaks = False #kalo terjebak di lokal maks, bernilai true
     step = 0 #sudah berapa kali iterasi
     listKonflikLokal = [] #list konflik lokal (beda dari yang di program utama)
@@ -224,26 +225,27 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
             #majuin terus sebanyak nDomain kali (kasus terburuk yaitu semua domain dicoba dan gaada yang lebih baik)
             for i in range(matkul.nDomain):
                 step += 1 #iterasi bertambah
-                tempMax -= decrease #toleransi berkurang
+                temp -= decrease #toleransi berkurang
                 matkul.idxPlus()
                 nKonflikNew = countConflicts() #prosedur ini merubah list konflik program utama saja (lokal tetap aman)
                 if nKonflikNew < nKonflikNow: #ternyata domain setelah dimajuin 1 jadi lebih baik
                     foundBetter = True
                     break #break for i
-                else: #sama aja atau bahkan lebih buruk, cek apakah bisa ditolerir untuk tetap diambil
-                    if tempMax > threshold:
-                        hasilRandom = random.randint(tempMin, tempMax);
-                        if hasilRandom >= threshold: #ambil walaupun lebih banyak konflik
+                else: #nKonflikNew >= nKonflikNow
+                    if temp > 0: #khusus SA
+                        #berapa peluang bisa mengambil yang lebih buruk (dalam persen, integer)
+                        persenProb = int(exp((nKonflikNow - nKonflikNew)/temp) * 100)
+                        hasilRandom = random.randint(0, 100)
+                        #cek apakah diambil
+                        if hasilRandom <= persenProb:
                             foundBetter = True
                             break #break for i
             nKonflikNow = nKonflikNew
             if foundBetter == True:
-                break #break for matkul, gausah geser matkul lain juga
+                break #break for matkul, gausah geser matkul lain lagi
             elif matkul == listKonflikLokal[len(listKonflikLokal) - 1]:
                 lokalMaks = True #semua domain dari semua matkul yang konflik sudah dicoba, gaada yang lebih baik
                 print "    LOKAL MAKSIMUM"
-        #keterangan tambahan : yang dicoba diganti domainnya HANYA matkul yg konflik,
-        #sedangkan matkul lain yang sudah fit pada selnya tidak di ubah
     #hasil : dapat solusi atau terjebak lokal maksimum
     if nKonflikNow == 0:
         print "SOLUSI DITEMUKAN DALAM", step, "ITERASI"
@@ -252,7 +254,7 @@ def hillOrStimulated(tempMax, tempMin, threshold, decrease):
         for matkul in listKonflik:
             print " ", matkul.nama
 
-def geneticAlgorithm():
+def geneticAlgorithm(generasi):
     #fitness function max kalau semua matkul domainnya alldiff
     fitnessMax = 0
     for matkul in listMatkul:
@@ -279,8 +281,8 @@ def geneticAlgorithm():
         idxMin = fitness.index(min(fitness))
         idxMax = fitness.index(max(fitness))
         keturunan += 1
-        #generasi lebih dari 5 menyebabkan kembar semua (tidak dapat hasil signifikan)
-        if keturunan == 5:
+        #gak nemu solusi sampai keturunan ke-generasi
+        if keturunan == generasi:
             #pasangkan lagi matkul dengan domain kepunyaan gen terbaik (fitness terbesar)
             restart()
             for i in range(len(listGen[idxMax])):
@@ -289,12 +291,12 @@ def geneticAlgorithm():
             print countConflicts(), "KONFLIK DALAM GENERASI", keturunan
             for matkul in listKonflik:
                 print " ", matkul.nama
-            return
+            break #break while infinite
         else:
             #gen jelek timpa dengan gen bagus
             for i in range(len(listMatkul)):
                 listGen[idxMin][i] = listGen[idxMax][i]
-            #kawin silang TANPA mutasi, mulai dari idxBelah sampai index terakhir
+            #kawin silang TANPA mutasi, mulai dari idxBelah (random) sampai index terakhir
             idxBelah = random.randint(1, len(listMatkul) - 2)
             for i in range(idxBelah, len(listMatkul)):
                 #swap idx 0 dan 1
@@ -305,6 +307,11 @@ def geneticAlgorithm():
                 temp = listGen[2][i]
                 listGen[2][i] = listGen[3][i]
                 listGen[3][i] = temp
+            #mutasi = matkul ke-matkulMutasi di gen, domainnya berubah menjadi domainMutasi
+            for gen in listGen:
+                matkulMutasi = random.randint(0, len(listMatkul) - 1)
+                domainMutasi = random.randint(0, listMatkul[matkulMutasi].nDomain - 1)
+                gen[matkulMutasi] = domainMutasi
 
 def restart(): #hapus data agar bisa dipakai ulang
     del listKonflik[:]
@@ -350,24 +357,27 @@ def convert_to_json():
 
 
 def execHC():
+    print "====HILL CLIMBING===="
     restart()
     initializeRandom()
-    hillOrStimulated(1, 1, 5, 1) #atur temperatur menjadi low
-    return
+    hillOrStimulated(0, 1) #atur temperatur menjadi 0
+    printHasil()
 
 def execSA():
+    print "====STIMULATED ANNEALING===="
     restart()
     initializeRandom()
-    hillOrStimulated(100, 1, 5, 1)
+    hillOrStimulated(50, 1)
     printHasil()
 
 def execGA():
+    print "====GENETIC ALGORITHM (4 GENES)===="
     for gen in listGen:
         del gen[:]
         #initializeRandom() tanpa heuristik
         for matkul in listMatkul:
             gen.append(random.randint(0, matkul.nDomain - 1)); #masukkan ke gen idxDomain nya saja
-    geneticAlgorithm()
+    geneticAlgorithm(20)
     printHasil()
 
 
