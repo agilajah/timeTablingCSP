@@ -130,7 +130,6 @@ class Domain:
 def bacaTestcase(namaFile):
     #no try catch
     fileTestcase = open(namaFile, "r")
-    status = "r"
     #parsing
     for stringBuffer in fileTestcase:
         line = stringBuffer.split("\n")[0] #menghilangkan ENTER di karakter terakhir
@@ -387,3 +386,12 @@ def execGA():
     printHasil()
 
 
+
+
+#program utama
+bacaTestcase("testcase3.txt")
+
+for m in listMatkul:
+    print m.nama, m.nDomain
+
+execHC()

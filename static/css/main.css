@@ -913,7 +913,7 @@ button {
   overflow: hidden;
   color: #000;
   right: 0;
-  left:0;
+  left:-5;
   top: 5px;
   position: absolute;
   padding: 3 16px;
@@ -982,4 +982,10 @@ button {
 .card--small .card__text {
   top: 10px;
   opacity: 0;
+}
+
+.resize-logo{
+  margin-top:10px;
+  width: 100px;
+  height: 45px;
 }

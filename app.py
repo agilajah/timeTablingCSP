@@ -74,10 +74,13 @@ def findSchedule():
                     used = "Genetic Algorithm"
 
 
-                result_in_json = algorithmz.convert_to_json()
-                effectiveness = algorithmz.calculateEffectiveness()
+
                 conflict = algorithmz.countConflicts()
+                effectiveness = algorithmz.calculateEffectiveness()
                 listKonflik = algorithmz.listKonflik
+
+
+                result_in_json = algorithmz.convert_to_json()
 
                 return render_template('result.html', data=result_in_json, effectiveness=effectiveness, conflict=conflict, listKonflik = listKonflik, used=used )
     except Exception as e:
