@@ -148,8 +148,9 @@ def bacaTestcase(namaFile):
             parsed = line.split(";") #string nama, string constraint ruang, int jamBuka, int jamTutup, int sks, int[] hari
             newObjekMatkul = Matkul(parsed[0], parsed[2], parsed[3], parsed[4], parsed[5].split(","))
             domain = makeListDomain(newObjekMatkul, parsed[1]) #cari tempat dan waktu mana saja yang memungkinkan
-            newObjekMatkul.addListDomain(domain) #daftarkan domain-domain tersebut ke listDomain
-            listMatkul.append(newObjekMatkul) #daftarkan objek baru ke list
+            if len(domain) > 0:
+                newObjekMatkul.addListDomain(domain) #daftarkan domain-domain tersebut ke listDomain
+                listMatkul.append(newObjekMatkul) #daftarkan objek baru ke list
 
 def makeListDomain(matkul, consRuangan):
     hasil = []
